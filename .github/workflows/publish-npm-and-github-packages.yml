@@ -12,20 +12,16 @@ jobs:
         steps:
         - name: checkout
           uses: actions/checkout@v2
-        - name: Check if version has been updated
-          id: versioncheck
-          uses: EndBug/version-check@v1
           with:
-            diff-search: true
-            token: ${{ secrets.GITHUB_TOKEN }}
-        - name: Checks if the package version has changed
-          if: steps.versioncheck.outputs.changed != 'true'
-          run: 'echo "No version change " && exit 1'
+            fetch-depth: 0
+        - name: get-npm-version
+          id: package-version
+          uses: martinbeentjes/npm-get-version-action@master
         - name: Checks whether the tag is the same as the version ignoring the begin
-          if: endsWith(github.ref, steps.versioncheck.outputs.version) != true
+          if: endsWith(github.ref, steps.package-version.outputs.current-version) != true
           run: 'echo "Tag is different from the new version" && exit 1'
 
-    publish:
+    publish-npnjs:
         needs: check
         runs-on: ubuntu-latest
         strategy:
@@ -49,6 +45,22 @@ jobs:
           run: npm publish --access public
           env:
             NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    publish-github-packages:
+        needs: check
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [10.x]
+        steps:
+        - name: checkout
+          uses: actions/checkout@v2
+        - name: npm install, build, and test
+          run: |
+            npm ci
+            npm run build --if-present
+            npm run lint
+            npm test
         - name: Set registry to GitHub Packages
           uses: actions/setup-node@v1
           with:
@@ -57,4 +69,4 @@ jobs:
         - name: Publish to GitHub Packages
           run: npm publish
           env:
-            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            NODE_AUTH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
