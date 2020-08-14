@@ -15,10 +15,10 @@
     "Raul Negreiros"
   ],
   "license": "GPL-3.0",
-  "homepage": "https://github.com/dojot/dojot",
+  "homepage": "https://github.com/dojot/dojot-microservice-sdk-js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dojot/dojot.git"
+    "url": "https://github.com/dojot/dojot-microservice-sdk-js.git"
   },
   "keywords": [
     "dojot",
