@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watchAll",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --fix --ext .js ."
   },
@@ -43,6 +44,7 @@
     "async": "^3.1.0",
     "fast-safe-stringify": "^2.0.7",
     "flat": "^5.0.0",
+    "lightship": "^6.1.0",
     "lodash": "^4.17.19",
     "node-rdkafka": "^2.8.0",
     "uuid": "^3.3.3",
