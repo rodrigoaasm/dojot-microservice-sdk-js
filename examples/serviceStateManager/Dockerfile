@@ -23,14 +23,9 @@ COPY lib microservice-sdk-pkg/lib
 COPY index.js microservice-sdk-pkg/
 
 # example application
-COPY examples/configManager/package*.json ./
+COPY examples/serviceStateManager/package*.json ./
 
 RUN npm install
-
-COPY examples/configManager/*.js ./
-
-RUN mkdir config
-COPY examples/configManager/config ./config
 
 FROM node:12.18.4-alpine
 
@@ -42,4 +37,4 @@ RUN apk --no-cache add \
 
 COPY --from=base /opt/example .
 
-CMD ["node", "index.js"]
+CMD ["node", "app/index.js"]
