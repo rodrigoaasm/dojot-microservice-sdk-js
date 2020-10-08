@@ -13,6 +13,19 @@ image summarizes the module flow:
 <img src="../../docs/images/ConfigManagerFlow.png" alt="Configuration Manager Flow">
 </p>
 
+# Table of Contents
+
+1. [Patterns](#patterns)
+   1. [Environment variables](##environment-variables)
+   2. [User configuration files](##user-configuration-files)
+   3. [Default configuration file](##default-configuration-file)
+   4. [Created configuration file](##created-configuration-file)
+   5. [Environment variables and file parameters](##environment-variables-and-file-parameters)
+   6. [Passing values through environment variables](##passing-values-through-environment-variables)
+2. [Scopes](#scopes)
+3. [Appropriate usage guide](#appropriate-usage-guide)
+4. [Usage](#usage)
+
 # Patterns
 
 ## Environment variables
@@ -124,7 +137,19 @@ you can already see, the translation removes the {SERVICE} acronym. The translat
 | V2K_APP_HOSTNAME         | app.hostname     |
 | EXAMPLE_SCOPE1_PARAM_KEY | scope1.param.key |
 
-## Scopes
+## Passing values through environment variables
+
+To pass a value, doesn't matter the type, you can simply pass it between `"` or `'`. Examples:
+
+```yml
+V2K_BOOLEAN_VAR: 'true'
+V2K_FLOAT_VAR: '10.0'
+V2K_INTEGER_VAR: "42"
+V2K_STRING_LIST_VAR: '["string1", "string2"]'
+V2K_STRING_VAR: "my_string"
+```
+
+# Scopes
 
 Let's say you have two classes and need two different configuration objects to pass to them. You can
 use the scopes to solve this issue.
@@ -161,6 +186,16 @@ this:
 ```js
 obj.class2['param4.key1']
 ```
+
+# Appropriate usage guide
+
+For the sake of standardization, we should follow some rules when applying this module to a service:
+
+- Apply the Occam's razor when creating your names: the simpler, the better.
+- Multiple agglutinated words should be avoided: instead of `kafka.consumerpartitionnumber`, a better
+alternative is `kafka.consumer.partition.number`.
+- This module does not accept uppercase letters: using them might not give you the expected results.
+- Always use scopes for better modularity.
 
 # Usage
 
