@@ -8,7 +8,39 @@ describe('toCanonicalFormat', () => {
 
 describe('createFilename', () => {
   it('should correctly create the filename', () => {
-    expect(Utils.createFilename('testFilename', './path')).toEqual('./path/testfilename');
+    expect(Utils.createFilename('/root/project', './path', 'testFilename'))
+      .toEqual('/root/project/path/testfilename');
+  });
+});
+
+describe('mergeObjects', () => {
+  it('should merge', () => {
+    const obj1 = {
+      scope1: {
+        param1: 1,
+        param2: ['a', 'b'],
+      },
+    };
+    const obj2 = {
+      scope1: {
+        param1: 2,
+        param2: ['c', 'd', 'e'],
+      },
+    };
+
+    expect(Utils.mergeObjects([obj1, obj2])).toEqual({
+      scope1: {
+        param1: 2,
+        param2: ['c', 'd', 'e'],
+      },
+    });
+
+    expect(Utils.mergeObjects([obj2, obj1])).toEqual({
+      scope1: {
+        param1: 1,
+        param2: ['a', 'b'],
+      },
+    });
   });
 });
 
