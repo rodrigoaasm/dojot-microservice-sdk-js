@@ -41,7 +41,7 @@ describe('integer', () => {
     expect(TypeConverter.integer(1.8)).toEqual(1);
   });
 
-  it('should not convert to integer - invallid value', () => {
+  it('should not convert to integer - invalid value', () => {
     expect(TypeConverter.integer('.')).toEqual(NaN);
     expect(TypeConverter.integer('a')).toEqual(NaN);
     expect(TypeConverter.integer('')).toEqual(NaN);
@@ -59,11 +59,19 @@ describe('string', () => {
 
 describe('string[]', () => {
   it('should convert', () => {
-    expect(TypeConverter['string[]']('["1", "2", \'3\']')).toEqual(['1', '2', '3']);
+    expect(TypeConverter['string[]']('["1", "2", "3"]')).toEqual(['1', '2', '3']);
+    expect(TypeConverter['string[]']('["1", "true", "3"]')).toEqual(['1', 'true', '3']);
+    expect(TypeConverter['string[]']('["1", "myString,a,b", "3"]')).toEqual(['1', 'myString,a,b', '3']);
   });
 
   it('should not convert - invalid delimiters', () => {
     expect(() => TypeConverter['string[]']('("1", "2", "3")')).toThrow();
     expect(() => TypeConverter['string[]']('["1", [2], "3"]')).toThrow();
+    expect(() => TypeConverter['string[]']('["1", {2}, "3"]')).toThrow();
+    expect(() => TypeConverter['string[]']('[\'1\', \'2\', \'3\']')).toThrow();
+    expect(() => TypeConverter['string[]']('["1", \'2\', "3"]')).toThrow();
+    expect(() => TypeConverter['string[]']('["1", 2, "3"]')).toThrow();
+    expect(() => TypeConverter['string[]']('["1", true, "3"]')).toThrow();
+    expect(() => TypeConverter['string[]']('["1", myString, "3"]')).toThrow();
   });
 });
