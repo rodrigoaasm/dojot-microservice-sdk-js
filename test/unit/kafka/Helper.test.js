@@ -24,13 +24,8 @@ KafkaMock.KafkaConsumer = class {
     this.resume = jest.fn();
     this.assignments = jest.fn();
     this.unassign = jest.fn();
-    // this.getMetadata = this.getMetadata.bind(this)
     this.getMetadata = jest.fn((_obj, callback) => callback());
   }
-
-//   getMetadata(_err, callback) {
-//     callback();
-//   }
 };
 
 const resolvedObject = {
