@@ -1,0 +1,17 @@
+{
+  "name": "samples-local-persistence",
+  "version": "1.0.0",
+  "description": "Example of usage of the local persistence manager",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rodrigo Aparecido Silva Maia",
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ]
+}

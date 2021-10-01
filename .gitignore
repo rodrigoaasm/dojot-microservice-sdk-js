@@ -14,3 +14,7 @@ node_modules/
 
 # local history
 .history
+
+# leveldb directories
+dojot_persistence_test
+dojot_persistence

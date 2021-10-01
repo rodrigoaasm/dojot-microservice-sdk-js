@@ -21,7 +21,8 @@
     "Mariane Previde",
     "Raul Negreiros",
     "Jonaphael Aristil",
-    "Thiago de Paula Ferreira"
+    "Thiago de Paula Ferreira",
+    "Rodrigo Aparecido Silva Maia"
   ],
   "license": "Apache-2.0",
   "licenses": [
@@ -53,6 +54,7 @@
   "dependencies": {
     "async": "^3.2.0",
     "compression": "^1.7.4",
+    "encoding-down": "^7.0.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-paginate": "^1.0.2",
@@ -63,12 +65,16 @@
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
+    "level": "^7.0.0",
+    "levelup": "^5.0.1",
     "lightship": "^6.7.2",
     "lodash": "^4.17.21",
+    "memdown": "^6.0.0",
     "morgan": "^1.10.0",
     "node-rdkafka": "^2.10.1",
     "on-finished": "^2.3.0",
     "serve-index": "^1.9.1",
+    "subleveldown": "^5.0.1",
     "uuid": "^8.3.2",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.2"

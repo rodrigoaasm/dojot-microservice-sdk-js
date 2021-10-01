@@ -1,4 +1,5 @@
 const util = require('util');
+
 const {
   Logger,
   Kafka: { Consumer },

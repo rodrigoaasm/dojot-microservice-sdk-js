@@ -14,6 +14,7 @@ attend the dojot microservices necessities.
   - [Logger](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/lib/logging/README.md)
   - [Service State Manager](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/lib/serviceStateManager/README.md)
   - [Backend Web Utils](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/lib/webUtils/README.md)
+  - [Local Persistence](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/lib/localPersistence/README.md)
 - Examples
   - [Configuration Manager](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/configManager/README.md)
   - [Kafka's Consumer (Sync Commit)](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/consumer/README.md)
@@ -22,3 +23,5 @@ attend the dojot microservices necessities.
   - [Logger](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/logging/README.md)
   - [Service State Manager](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/serviceStateManager/README.md)
   - [Backend Web Utils](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/webUtils/README.md)
+  - [Local Persistence (Use Cases)](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/localPersistence/samples/README.md)
+  - [Local Persistence (Sample Service)](https://github.com/dojot/dojot-microservice-sdk-js/blob/master/examples/localPersistence/minidevicemanager/README.md)
