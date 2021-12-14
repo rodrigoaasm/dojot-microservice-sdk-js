@@ -73,6 +73,7 @@
     "morgan": "^1.10.0",
     "node-rdkafka": "^2.10.1",
     "on-finished": "^2.3.0",
+    "openid-client": "^4.9.1",
     "serve-index": "^1.9.1",
     "subleveldown": "^5.0.1",
     "uuid": "^8.3.2",
