@@ -113,6 +113,7 @@ describe('Kafka producer', () => {
       deliveryReportFn(undefined, { opaque: '' });
     });
   });
+
   describe('Kafka connection handling', () => {
     it('should connect to Kafka successfully', (done) => {
       /**

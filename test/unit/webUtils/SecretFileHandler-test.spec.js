@@ -6,7 +6,7 @@ const mockFs = {
 };
 jest.mock('fs', () => mockFs);
 
-const SecretHandler = require('../../../lib/webUtils/SecretHandler');
+const SecretHandler = require('../../../lib/webUtils/SecretFileHandler');
 
 const loggerMock = {
   error: jest.fn(),
