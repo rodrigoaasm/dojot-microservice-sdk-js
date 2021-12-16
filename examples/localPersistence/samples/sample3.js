@@ -83,9 +83,7 @@ localPersistence.init().then(() => {
   };
 
   // Gererate dispath callback
-  const dispatchCallback = inputPersister.getDispatchCallback(
-    InputPersisterArgs.INSERT_OPERATION, errorCallback, {},
-  );
+  const dispatchCallback = inputPersister.getDispatchCallback(InputPersisterArgs.INSERT_OPERATION, errorCallback, {},);
 
   // Execute dispath callback
   dispatchCallback(payloadExample);

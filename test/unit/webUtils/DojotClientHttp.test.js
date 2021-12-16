@@ -82,8 +82,7 @@ describe('DojotClientHttp', () => {
 
     dojotClientHttp.retry = (
       // eslint-disable-next-line no-shadow
-      requestError, options, resolve, reject, configRetryRequest,
-    ) => {
+      requestError, options, resolve, reject, configRetryRequest,) => {
       expect(requestError).toBeDefined();
       expect(options).toBeDefined();
       expect(configRetryRequest).toEqual({

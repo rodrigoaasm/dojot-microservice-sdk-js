@@ -385,16 +385,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.error.mock.calls.length).toBe(2);
-    expect(logger.logger.error).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.not.objectContaining({
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.error).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.not.objectContaining({
+      })
+);
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 
   test('Log warning messages', () => {
@@ -407,16 +413,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.warn.mock.calls.length).toBe(2);
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.not.objectContaining({
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.not.objectContaining({
+      })
+);
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 
   test('Log info messages', () => {
@@ -429,16 +441,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.info.mock.calls.length).toBe(2);
-    expect(logger.logger.info).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.not.objectContaining({
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.info).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.not.objectContaining({
+      })
+);
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 
   test('Log debug messages', () => {
@@ -451,16 +469,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.debug.mock.calls.length).toBe(2);
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.not.objectContaining({
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.not.objectContaining({
+      })
+);
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 });
 
@@ -478,16 +502,22 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.error.mock.calls.length).toBe(2);
-    expect(logger.logger.error).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.objectContaining({
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.error).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.objectContaining({
+      })
+);
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 
   test('Log warning messages', () => {
@@ -500,16 +530,22 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.warn.mock.calls.length).toBe(2);
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.objectContaining({
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.objectContaining({
+      })
+);
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 
   test('Log info messages', () => {
@@ -522,16 +558,22 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.info.mock.calls.length).toBe(2);
-    expect(logger.logger.info).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.objectContaining({
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.info).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.objectContaining({
+      })
+);
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 
   test('Log debug messages', () => {
@@ -544,15 +586,21 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.debug.mock.calls.length).toBe(2);
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(1, 'message #1',
-      expect.objectContaining({
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+1,
+'message #1',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(2, 'message #2',
-      expect.objectContaining({
+      })
+);
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+2,
+'message #2',
+expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      })
+);
   });
 });
