@@ -370,14 +370,12 @@ describe('Kafka producer', () => {
       producer.produce('sample-topic-prod', 'sample-msg-prod', 'sample-key', 'sample-partition');
       // << Tested code
 
-      expect(mockKafka.producer.produce).toBeCalledWith(
-'sample-topic-prod',
+      expect(mockKafka.producer.produce).toBeCalledWith('sample-topic-prod',
         'sample-partition',
         Buffer.from('sample-msg-prod'),
         'sample-key',
         expect.anything(),
-        expect.anything()
-);
+        expect.anything());
     });
 
     it('should produce messages with default key and partition', () => {
@@ -387,14 +385,12 @@ describe('Kafka producer', () => {
       producer.produce('sample-topic-prod-default', 'sample-msg-prod-default');
       // << Tested code
 
-      expect(mockKafka.producer.produce).toBeCalledWith(
-'sample-topic-prod-default',
+      expect(mockKafka.producer.produce).toBeCalledWith('sample-topic-prod-default',
         null,
         Buffer.from('sample-msg-prod-default'),
         null,
         expect.anything(),
-        expect.anything()
-);
+        expect.anything());
     });
   });
 });

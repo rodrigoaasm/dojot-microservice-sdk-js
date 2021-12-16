@@ -24,32 +24,20 @@ const consumer = new Consumer({
   },
 });
 
-consumer.on(
-'ready',
-  () => logger.info('Received ready event')
-);
-consumer.on(
-'disconnected',
-  () => logger.info('Received disconnected event')
-);
-consumer.on(
-'paused',
-  () => logger.info('Received paused event')
-);
-consumer.on(
-'resumed',
-  () => logger.info('Received resumed event')
-);
-consumer.on(
-'error.connecting',
-  () => logger.info('Received error.connecting event')
-);
-consumer.on(
-'error.processing',
+consumer.on('ready',
+  () => logger.info('Received ready event'));
+consumer.on('disconnected',
+  () => logger.info('Received disconnected event'));
+consumer.on('paused',
+  () => logger.info('Received paused event'));
+consumer.on('resumed',
+  () => logger.info('Received resumed event'));
+consumer.on('error.connecting',
+  () => logger.info('Received error.connecting event'));
+consumer.on('error.processing',
   (cbId, data) => logger.info(
     `Received error.processing event (cbId: ${cbId}: data: ${util.inspect(data)})`,
-  )
-);
+  ));
 
 const getStatusFunc = () => {
   consumer.getStatus().then((value) => {

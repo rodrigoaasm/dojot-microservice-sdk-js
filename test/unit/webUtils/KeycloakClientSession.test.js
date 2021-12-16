@@ -39,15 +39,13 @@ describe('keycloakAuthInterceptor', () => {
   let keycloakSession;
   beforeEach(() => {
     keycloakSession = new KeycloakClientSession(
-      'keycloak_url',
-'test',
-{
+      'keycloak_url', 'test', {
         grant_type: 'client-credentials',
         client_id: 'test_id',
         client_secret: 'client_secret',
       },
-mockLogger,
-{ retryDelay: 20 },
+      mockLogger,
+      { retryDelay: 20 },
     );
   });
 

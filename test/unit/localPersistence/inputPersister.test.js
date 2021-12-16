@@ -342,7 +342,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, {},);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, {},
+    );
     dispatchCallback(payload);
   });
 
@@ -363,7 +365,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, { filterCallback },);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, { filterCallback },
+    );
     dispatchCallback(payload);
   });
 
@@ -384,7 +388,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, { filterCallback },);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, { filterCallback },
+    );
     dispatchCallback(payload);
   });
 
@@ -405,7 +411,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, { filterCallback },);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, { filterCallback },
+    );
     dispatchCallback(payload);
   });
 
@@ -426,7 +434,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, { transformCallback },);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, { transformCallback },
+    );
     dispatchCallback(payload);
   });
 
@@ -447,7 +457,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, { transformCallback },);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, { transformCallback },
+    );
     dispatchCallback(payload);
   });
 
@@ -465,7 +477,9 @@ describe('Input Persister', () => {
     }
 
     /* Test */
-    const dispatchCallback = inputPersister.getDispatchCallback(INSERT_OPERATION, errorCallback, {},);
+    const dispatchCallback = inputPersister.getDispatchCallback(
+      INSERT_OPERATION, errorCallback, {},
+    );
     dispatchCallback(payload);
   });
 });
