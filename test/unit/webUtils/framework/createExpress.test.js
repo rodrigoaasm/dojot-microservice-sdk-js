@@ -2,12 +2,12 @@ jest.mock('express-ws', () => jest.fn());
 jest.mock('../../../../lib/webUtils/framework/backing/registerInterceptors', () => jest.fn());
 jest.mock('../../../../lib/webUtils/framework/backing/registerRoutes', () => jest.fn());
 jest.mock('../../../../lib/webUtils/framework/backing/defaultErrorHandler',
-  () => jest.fn().mockImplementation(
-    () => (err, req, res, next) => {
-      res.status(404).json({ error: err.message });
-      next('route');
-    },
-  ));
+  () => jest.fn().mockImplementation(() => (
+    err, req, res, next,
+  ) => {
+    res.status(404).json({ error: err.message });
+    next('route');
+  }));
 
 const request = require('supertest');
 const expressWS = require('express-ws');

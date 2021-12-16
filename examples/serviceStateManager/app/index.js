@@ -112,7 +112,9 @@ const main = () => {
           });
       });
 
-      stateManager.addHealthChecker('server', httpHealthChecker, 5000);
+      stateManager.addHealthChecker(
+        'server', httpHealthChecker, 5000,
+      );
     }
 
     stateManager.registerShutdownHandler(() => new Promise((resolve, reject) => {

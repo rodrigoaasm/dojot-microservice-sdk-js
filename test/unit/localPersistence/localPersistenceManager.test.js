@@ -20,7 +20,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should construct the class without an in-memory clone, when readInMemory is set to false.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
     /* matches */
     expect(dojotDB.memoryLevels).toBeUndefined();
@@ -28,7 +30,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should initialize the disk level', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -43,7 +47,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should get the level of the disk, when the level has already been initialized', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
     await dojotDB.initializeDiskLevel('test_1', {
       keyEncoding: 'utf8',
@@ -60,7 +66,9 @@ describe('Local Persistence Manager', () => {
   it('Should throw an error, when the level has not been initialized', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -77,7 +85,9 @@ describe('Local Persistence Manager', () => {
   it('Should throw an error, when the level name parameter is "managementLevel"', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -93,7 +103,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should initialize only one disk level, when readInMemory is set to false.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -109,7 +121,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should get the level from memory, when the level has already been initialized', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
     await dojotDB.initializeLevel('test_1', {
       keyEncoding: 'utf8',
@@ -126,7 +140,9 @@ describe('Local Persistence Manager', () => {
   it('Should throw an error, when readInMemory is set to false ', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -143,7 +159,9 @@ describe('Local Persistence Manager', () => {
   it('Should throw an error, when the level has not been initialized', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -159,7 +177,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should construct the class with an in-memory clone, when readInMemory is set to true.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* matches */
@@ -168,7 +188,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should initialize one disk level and one memory level, when readInMemory is set to true.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -184,7 +206,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should recover disk level and memory level already initialized', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
@@ -204,7 +228,9 @@ describe('Local Persistence Manager', () => {
   it('Should throw an error, when the level name parameter is "managementLevel"', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -223,7 +249,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should clone the database levels in memory', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
@@ -252,7 +280,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should copy data from one level to another', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
@@ -279,11 +309,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should store the data to disk and then retrieve the same data, when readInMemory is set to false.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
-    await dojotDB.put('test_level', 'test_key', 'test_value');
+    await dojotDB.put(
+      'test_level', 'test_key', 'test_value',
+    );
 
     /* Matches */
     expect(await dojotDB.getInDisk('test_level', 'test_key')).toEqual('test_value');
@@ -292,11 +326,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should store the data in memory and on disk and then retrieve the same data from memory, when readInMemory is set to true.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
-    await dojotDB.put('test_level', 'test_key', 'test_value');
+    await dojotDB.put(
+      'test_level', 'test_key', 'test_value',
+    );
 
     /* Matches */
     expect(await dojotDB.getInMemory('test_level', 'test_key')).toEqual('test_value');
@@ -305,7 +343,9 @@ describe('Local Persistence Manager', () => {
   it('Should store the data to disk and then retrieve the same data, when readInMemory is set to false.', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Test */
@@ -321,7 +361,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should perform all insertion operations on disk only, when readInMemory is set to false.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
@@ -353,7 +395,9 @@ describe('Local Persistence Manager', () => {
 
   it('Should perform all insertion operations on disk and in-memory, when readInMemory is set to true.', async () => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
@@ -386,12 +430,20 @@ describe('Local Persistence Manager', () => {
   it('Should perform all deletion operations on disk only, when readInMemory is set to false.', async () => {
     const errors = [];
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
-    await dojotDB.put('test_level_1', 'test_key_1', 'test_value_1');
-    await dojotDB.put('test_level_1', 'test_key_2', 'test_value_2');
-    await dojotDB.put('test_level_1', 'test_key_3', 'test_value_3');
+    await dojotDB.put(
+      'test_level_1', 'test_key_1', 'test_value_1',
+    );
+    await dojotDB.put(
+      'test_level_1', 'test_key_2', 'test_value_2',
+    );
+    await dojotDB.put(
+      'test_level_1', 'test_key_3', 'test_value_3',
+    );
 
     /* Prepare */
     const operations = new Map();
@@ -440,12 +492,20 @@ describe('Local Persistence Manager', () => {
   it('Should perform all deletion operations on disk and in-memory, when readInMemory is set to true.', async () => {
     const errors = [];
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
-    await dojotDB.put('test_level_1', 'test_key_1', 'test_value_1');
-    await dojotDB.put('test_level_1', 'test_key_2', 'test_value_2');
-    await dojotDB.put('test_level_1', 'test_key_3', 'test_value_3');
+    await dojotDB.put(
+      'test_level_1', 'test_key_1', 'test_value_1',
+    );
+    await dojotDB.put(
+      'test_level_1', 'test_key_2', 'test_value_2',
+    );
+    await dojotDB.put(
+      'test_level_1', 'test_key_3', 'test_value_3',
+    );
 
     /* Prepare */
     const operations = new Map();
@@ -494,11 +554,15 @@ describe('Local Persistence Manager', () => {
   it('Should delete the data from the database on disk, when readInMemory is set to false. ', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, false, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, false, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key', 'test_value');
+    await dojotDB.put(
+      'test_level', 'test_key', 'test_value',
+    );
     await dojotDB.del('test_level', 'test_key');
 
     /* Test */
@@ -515,11 +579,15 @@ describe('Local Persistence Manager', () => {
   it('Should delete the data from the database in memory and on disk, when readInMemory is set to true. ', async () => {
     /* Init objects */
     let error;
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     //* Prepare */
-    await dojotDB.put('test_level', 'test_key', 'test_value');
+    await dojotDB.put(
+      'test_level', 'test_key', 'test_value',
+    );
     await dojotDB.del('test_level', 'test_key');
 
     /* Test */
@@ -537,13 +605,17 @@ describe('Local Persistence Manager', () => {
     /* Init objects */
     let putError;
     let getError;
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
     const sublevelInDisk = await dojotDB.initializeDiskLevel('test_level');
     try {
-      await dojotDB.put('test_level', 'test_key', 'test_value');
+      await dojotDB.put(
+        'test_level', 'test_key', 'test_value',
+      );
     } catch (e) {
       putError = e;
     }
@@ -570,11 +642,15 @@ describe('Local Persistence Manager', () => {
   it('Should restore deleted data from disk when delete in-memory operation fails', async () => {
     /* Init objects */
     let delError;
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key', 'test_value');
+    await dojotDB.put(
+      'test_level', 'test_key', 'test_value',
+    );
     const sublevelInDisk = await dojotDB.initializeDiskLevel('test_level');
 
     /* Mocks */
@@ -599,11 +675,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the key stream', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value-1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value-1',
+    );
 
     (await dojotDB.createKeyStream('test_level')).on('data', (data) => {
       expect(data).toEqual('test_key_1');
@@ -613,11 +693,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the value stream', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value_1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value_1',
+    );
 
     (await dojotDB.createValueStream('test_level')).on('data', (data) => {
       expect(data).toEqual('test_value_1');
@@ -627,11 +711,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the entry stream', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value_1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value_1',
+    );
 
     (await dojotDB.createStream('test_level')).on('data', (data) => {
       expect(data).toEqual({
@@ -644,11 +732,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the key stream from memory', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value-1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value-1',
+    );
 
     (await dojotDB.createKeyStreamInMemory('test_level')).on('data', (data) => {
       expect(data).toEqual('test_key_1');
@@ -658,11 +750,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the value stream from memory', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value_1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value_1',
+    );
 
     (await dojotDB.createValueStreamInMemory('test_level')).on('data', (data) => {
       expect(data).toEqual('test_value_1');
@@ -672,11 +768,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the entry stream from memory', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value_1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value_1',
+    );
 
     (await dojotDB.createStreamInMemory('test_level')).on('data', (data) => {
       expect(data).toEqual({
@@ -689,11 +789,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the key stream from disk', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value-1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value-1',
+    );
 
     (await dojotDB.createKeyStreamInDisk('test_level')).on('data', (data) => {
       expect(data).toEqual('test_key_1');
@@ -703,11 +807,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the value stream from disk', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value_1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value_1',
+    );
 
     (await dojotDB.createValueStreamInDisk('test_level')).on('data', (data) => {
       expect(data).toEqual('test_value_1');
@@ -717,11 +825,15 @@ describe('Local Persistence Manager', () => {
 
   it('Should run the entry stream from disk', async (done) => {
     /* Init objects */
-    dojotDB = new LocalPersistenceManager(loggerMock, true, 'dojot_persistence_test');
+    dojotDB = new LocalPersistenceManager(
+      loggerMock, true, 'dojot_persistence_test',
+    );
     await dojotDB.init();
 
     /* Prepare */
-    await dojotDB.put('test_level', 'test_key_1', 'test_value_1');
+    await dojotDB.put(
+      'test_level', 'test_key_1', 'test_value_1',
+    );
 
     (await dojotDB.createStreamInDisk('test_level')).on('data', (data) => {
       expect(data).toEqual({

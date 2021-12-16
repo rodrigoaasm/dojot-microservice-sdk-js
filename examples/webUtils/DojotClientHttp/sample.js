@@ -42,10 +42,12 @@ dojotClientHttp.request({
 });
 
 // This request will fail.
-dojotClientHttp.request({
-  method: 'get',
-  url: 'out',
-}, 1000, 0).then((response) => {
+dojotClientHttp.request(
+  {
+    method: 'get',
+    url: 'out',
+  }, 1000, 0,
+).then((response) => {
   logger.info(response.data);
 }).catch((error) => {
   logger.error(error);

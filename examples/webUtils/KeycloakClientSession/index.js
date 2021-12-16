@@ -22,20 +22,26 @@ const logger = new Logger('sample1-secret-handler');
  *  Prepare the connection for keycloak by entering
  * credentials and other keycloak information
  */
-const keycloakClientSession = new KeycloakClientSession(KEYCLOAK_URI, KEYCLOAK_REALM, {
-  credentials: 'client_credentials',
-  client_id: KEYCLOAK_CLIENT_ID,
-  client_secret: KEYCLOAK_CLIENT_SECRET,
-}, logger, {
-  retryDelay: 5000,
-});
+const keycloakClientSession = new KeycloakClientSession(
+  KEYCLOAK_URI,
+  KEYCLOAK_REALM,
+  {
+    credentials: 'client_credentials',
+    client_id: KEYCLOAK_CLIENT_ID,
+    client_secret: KEYCLOAK_CLIENT_SECRET,
+  },
+  logger,
+  {
+    retryDelay: 5000,
+  },
+);
 
 /**
  * When the connection is stabilized or updated, this event
  * will be emitted with the set of tokens.
  */
 keycloakClientSession.on('update-token', (tokenSet) => {
-  console.log(tokenSet);
+  logger.info(tokenSet);
 });
 
 // Start session

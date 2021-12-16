@@ -31,10 +31,8 @@ server.on('request', (req, res) => {
 server.listen(443);
 
 // Graceful shutdown
-['SIGTERM', 'SIGINT'].forEach(
-  (sig) => process.on(sig, () => {
-    server.close(() => {
-      process.exit(0);
-    });
-  }),
-);
+['SIGTERM', 'SIGINT'].forEach((sig) => process.on(sig, () => {
+  server.close(() => {
+    process.exit(0);
+  });
+}));

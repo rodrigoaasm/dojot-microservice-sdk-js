@@ -18,9 +18,15 @@ const localPersistence = new LocalPersistenceManager(logger, true);
 localPersistence.init().then(async () => {
 
   // Writing data
-  await localPersistence.put('example_6', 'example_key_1', 'example_value_1');
-  await localPersistence.put('example_6', 'example_key_2', 'example_value_2');
-  await localPersistence.put('example_6', 'example_key_2', 'example_value_2');
+  await localPersistence.put(
+    'example_6', 'example_key_1', 'example_value_1',
+  );
+  await localPersistence.put(
+    'example_6', 'example_key_2', 'example_value_2',
+  );
+  await localPersistence.put(
+    'example_6', 'example_key_2', 'example_value_2',
+  );
 
   (await localPersistence.createStream('example_6')).on('data', (data) => {
     logger.info(`key = ${data.key} value = ${data.value}`);

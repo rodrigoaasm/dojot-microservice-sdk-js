@@ -34,7 +34,9 @@ describe('DojotClientHttp', () => {
   });
 
   it('Should use default options to call the doRequest when no options is entered  ', async () => {
-    dojotClientHttp.doRequest = (options, resolve, reject, configRetryRequest) => {
+    dojotClientHttp.doRequest = (
+      options, resolve, reject, configRetryRequest,
+    ) => {
       expect(configRetryRequest.attempts).toEqual(0);
       expect(configRetryRequest.retryDelay).toEqual(5000);
       expect(configRetryRequest.maxNumberAttempts).toEqual(3);
@@ -45,13 +47,17 @@ describe('DojotClientHttp', () => {
   });
 
   it('Should use entered options to call the doRequest when the options is entered  ', async () => {
-    dojotClientHttp.doRequest = (options, resolve, reject, configRetryRequest) => {
+    dojotClientHttp.doRequest = (
+      options, resolve, reject, configRetryRequest,
+    ) => {
       expect(configRetryRequest.attempts).toEqual(0);
       expect(configRetryRequest.retryDelay).toEqual(7000);
       expect(configRetryRequest.maxNumberAttempts).toEqual(7);
       resolve();
     };
-    await dojotClientHttp.request({}, 7000, 7);
+    await dojotClientHttp.request(
+      {}, 7000, 7,
+    );
     expect.assertions(3);
   });
 
@@ -66,11 +72,13 @@ describe('DojotClientHttp', () => {
     };
     const reject = () => {};
 
-    dojotClientHttp.doRequest({}, resolve, reject, {
-      attempts: 0,
-      retryDelay: 5000,
-      maxNumberAttempts: 3,
-    });
+    dojotClientHttp.doRequest(
+      {}, resolve, reject, {
+        attempts: 0,
+        retryDelay: 5000,
+        maxNumberAttempts: 3,
+      },
+    );
     expect.assertions(1);
   });
 
@@ -94,11 +102,13 @@ describe('DojotClientHttp', () => {
       done();
     };
 
-    dojotClientHttp.doRequest({}, resolve, reject, {
-      attempts: 0,
-      retryDelay: 5000,
-      maxNumberAttempts: 3,
-    });
+    dojotClientHttp.doRequest(
+      {}, resolve, reject, {
+        attempts: 0,
+        retryDelay: 5000,
+        maxNumberAttempts: 3,
+      },
+    );
     expect.assertions(3);
   });
 
@@ -110,8 +120,10 @@ describe('DojotClientHttp', () => {
     const resolve = () => {};
     const reject = () => {};
 
-    // eslint-disable-next-line no-shadow
-    dojotClientHttp.doRequest = (options, resolve, reject, configRetryRequest) => {
+    dojotClientHttp.doRequest = (
+      // eslint-disable-next-line no-shadow
+      options, resolve, reject, configRetryRequest,
+    ) => {
       expect(options).toBeDefined();
       expect(configRetryRequest).toEqual({
         attempts: 1,
@@ -121,11 +133,13 @@ describe('DojotClientHttp', () => {
       done();
     };
 
-    dojotClientHttp.retry(requestError, {}, resolve, reject, {
-      attempts: 0,
-      retryDelay: 10,
-      maxNumberAttempts: 3,
-    });
+    dojotClientHttp.retry(
+      requestError, {}, resolve, reject, {
+        attempts: 0,
+        retryDelay: 10,
+        maxNumberAttempts: 3,
+      },
+    );
     expect.assertions(2);
   });
 
@@ -137,8 +151,11 @@ describe('DojotClientHttp', () => {
     const resolve = () => {};
     const reject = () => {};
 
-    // eslint-disable-next-line no-shadow
-    dojotClientHttp.doRequest = (options, resolve, reject, configRetryRequest) => {
+
+    dojotClientHttp.doRequest = (
+      // eslint-disable-next-line no-shadow
+      options, resolve, reject, configRetryRequest,
+    ) => {
       expect(options).toBeDefined();
       expect(configRetryRequest).toEqual({
         attempts: 2,
@@ -148,11 +165,13 @@ describe('DojotClientHttp', () => {
       done();
     };
 
-    dojotClientHttp.retry(requestError, {}, resolve, reject, {
-      attempts: 1,
-      retryDelay: 10,
-      maxNumberAttempts: 3,
-    });
+    dojotClientHttp.retry(
+      requestError, {}, resolve, reject, {
+        attempts: 1,
+        retryDelay: 10,
+        maxNumberAttempts: 3,
+      },
+    );
     expect.assertions(2);
   });
 
@@ -168,11 +187,13 @@ describe('DojotClientHttp', () => {
       done();
     };
 
-    dojotClientHttp.retry(requestError, {}, resolve, reject, {
-      attempts: 3,
-      retryDelay: 10,
-      maxNumberAttempts: 3,
-    });
+    dojotClientHttp.retry(
+      requestError, {}, resolve, reject, {
+        attempts: 3,
+        retryDelay: 10,
+        maxNumberAttempts: 3,
+      },
+    );
     expect.assertions(1);
   });
 

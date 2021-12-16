@@ -65,7 +65,9 @@ describe('keycloakAuthInterceptor', () => {
       expect(error).toBeUndefined();
     };
 
-    keycloakAuthInterceptor.middleware(request, {}, next);
+    keycloakAuthInterceptor.middleware(
+      request, {}, next,
+    );
 
     expect.assertions(1);
   });
@@ -84,7 +86,9 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(request, {}, () => {});
+      keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
     } catch (httpError) {
       expect(httpError.responseJSON.error).toEqual('Unauthorized access');
       expect(httpError.responseJSON.detail).toEqual('Access token is not found');
@@ -107,7 +111,9 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(request, {}, () => {});
+      keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
     } catch (httpError) {
       expect(httpError.responseJSON.error).toEqual('Unauthorized access');
       expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
@@ -124,7 +130,9 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(request, {}, () => {});
+      keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
     } catch (httpError) {
       expect(httpError).toBeDefined();
     }

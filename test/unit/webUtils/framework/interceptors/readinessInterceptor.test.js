@@ -40,7 +40,9 @@ describe("Unit tests of script 'readinessInterceptor.js'", () => {
     const res = {};
     const next = jest.fn();
 
-    expect(readinessInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(readinessInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(next).toHaveBeenCalledTimes(1);
     expect(logger.error).toHaveBeenCalledTimes(0);
     expect(logger.debug).toHaveBeenCalledTimes(0);
@@ -55,7 +57,9 @@ describe("Unit tests of script 'readinessInterceptor.js'", () => {
     const res = {};
     const next = jest.fn();
 
-    expect(readinessInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(readinessInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
 
     expect(next).toHaveBeenCalledTimes(1);
     expect(next.mock.calls[0][0]).toBeInstanceOf(Error);
@@ -76,7 +80,9 @@ describe("Unit tests of script 'readinessInterceptor.js'", () => {
     const res = {};
     const next = jest.fn();
 
-    expect(readinessInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(readinessInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(next).toHaveBeenCalledTimes(1);
     expect(logger.error).toHaveBeenCalledTimes(0);
     expect(logger.debug).toHaveBeenCalledTimes(1);

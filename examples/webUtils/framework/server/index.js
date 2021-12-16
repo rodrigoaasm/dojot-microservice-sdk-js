@@ -20,10 +20,8 @@ server.on('request', framework);
 server.listen(80);
 
 // graceful shutdown
-['SIGTERM', 'SIGINT'].forEach(
-  (sig) => process.on(sig, () => {
-    server.close(() => {
-      process.exit(0);
-    });
-  }),
-);
+['SIGTERM', 'SIGINT'].forEach((sig) => process.on(sig, () => {
+  server.close(() => {
+    process.exit(0);
+  });
+}));
