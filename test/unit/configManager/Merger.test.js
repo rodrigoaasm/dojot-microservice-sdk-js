@@ -19,7 +19,9 @@ const defaultData = [
 
 describe('Functionality', () => {
   it('should correctly merge - 3 non-empty configurations', () => {
-    const merged = Merger.mergeConfigs(envVarsData, userData, defaultData);
+    const merged = Merger.mergeConfigs(
+      envVarsData, userData, defaultData,
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: 10,
@@ -33,7 +35,9 @@ describe('Functionality', () => {
   });
 
   it('should correctly merge - 2 non-empty configurations', () => {
-    const merged = Merger.mergeConfigs(envVarsData, userData, []);
+    const merged = Merger.mergeConfigs(
+      envVarsData, userData, [],
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: '10',
@@ -45,7 +49,9 @@ describe('Functionality', () => {
   });
 
   it('should correctly merge - 1 non-empty configurations', () => {
-    const merged = Merger.mergeConfigs(envVarsData, [], []);
+    const merged = Merger.mergeConfigs(
+      envVarsData, [], [],
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: '10',
@@ -56,14 +62,18 @@ describe('Functionality', () => {
   });
 
   it('should correctly merge - all configurations empty', () => {
-    const merged = Merger.mergeConfigs([], [], []);
+    const merged = Merger.mergeConfigs(
+      [], [], [],
+    );
     expect(merged).toEqual({});
   });
 });
 
 describe('Precedence', () => {
   it('should apply the default config', () => {
-    const merged = Merger.mergeConfigs([], [], defaultData);
+    const merged = Merger.mergeConfigs(
+      [], [], defaultData,
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: 2,
@@ -77,7 +87,9 @@ describe('Precedence', () => {
   });
 
   it('should apply the user config', () => {
-    const merged = Merger.mergeConfigs([], userData, defaultData);
+    const merged = Merger.mergeConfigs(
+      [], userData, defaultData,
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: 2,
@@ -91,7 +103,9 @@ describe('Precedence', () => {
   });
 
   it('should apply the environment variables config', () => {
-    const merged = Merger.mergeConfigs(envVarsData, userData, defaultData);
+    const merged = Merger.mergeConfigs(
+      envVarsData, userData, defaultData,
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: 10,
@@ -107,7 +121,9 @@ describe('Precedence', () => {
 
 describe('Typing', () => {
   it('should create a typed configuration object from user the configuration file', () => {
-    const merged = Merger.mergeConfigs([], userData, defaultData);
+    const merged = Merger.mergeConfigs(
+      [], userData, defaultData,
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: 2,
@@ -121,7 +137,9 @@ describe('Typing', () => {
   });
 
   it('should create a typed configuration object from environment variables', () => {
-    const merged = Merger.mergeConfigs(envVarsData, userData, defaultData);
+    const merged = Merger.mergeConfigs(
+      envVarsData, userData, defaultData,
+    );
     expect(merged).toEqual({
       scope1: {
         testparam1: 10,

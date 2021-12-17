@@ -18,7 +18,9 @@ const localPersistence = new LocalPersistenceManager(logger, true);
 localPersistence.init().then(() => {
 
   // Writing data
-  localPersistence.put('example_1', 'example_key_1', 'example_value_1').then(() => {
+  localPersistence.put(
+    'example_1', 'example_key_1', 'example_value_1',
+  ).then(() => {
 
     // Reading data
     localPersistence.get('example_1', 'example_key_1').then((value) => {

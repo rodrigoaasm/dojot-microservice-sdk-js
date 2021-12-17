@@ -15,11 +15,15 @@ describe('Express Framework - Register Interceptors', () => {
   it('should register the interceptor', () => {
     const interceptor = {
       name: 'a custom name',
-      middleware: (req, res, next) => { next(); },
+      middleware: (
+        req, res, next,
+      ) => { next(); },
     };
     const framework = express();
 
-    registerInterceptors(interceptor, framework, logger);
+    registerInterceptors(
+      interceptor, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -31,11 +35,15 @@ describe('Express Framework - Register Interceptors', () => {
       name: 'a custom name',
       path: '/custom-path',
       // 'middleware' also accepts an array of functions
-      middleware: [(req, res, next) => { next(); }],
+      middleware: [(
+        req, res, next,
+      ) => { next(); }],
     };
     const framework = express();
 
-    registerInterceptors([interceptor], framework, logger);
+    registerInterceptors(
+      [interceptor], framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
     expect(framework.use.mock.calls[0][0]).toMatchObject([interceptor.path]);
@@ -45,12 +53,16 @@ describe('Express Framework - Register Interceptors', () => {
     const interceptor = {
       name: 123, // 'name' is not a string
       path: '/custom-path',
-      middleware: (req, res, next) => { next(); },
+      middleware: (
+        req, res, next,
+      ) => { next(); },
     };
     const framework = express();
 
     expect(() => {
-      registerInterceptors([interceptor], framework, logger);
+      registerInterceptors(
+        [interceptor], framework, logger,
+      );
     }).toThrow();
   });
 
@@ -58,12 +70,16 @@ describe('Express Framework - Register Interceptors', () => {
     const interceptor = {
       name: 'a custom name',
       path: {}, // invalid path
-      middleware: (req, res, next) => { next(); },
+      middleware: (
+        req, res, next,
+      ) => { next(); },
     };
     const framework = express();
 
     expect(() => {
-      registerInterceptors([interceptor], framework, logger);
+      registerInterceptors(
+        [interceptor], framework, logger,
+      );
     }).toThrow();
   });
 
@@ -76,7 +92,9 @@ describe('Express Framework - Register Interceptors', () => {
     const framework = express();
 
     expect(() => {
-      registerInterceptors(interceptor, framework, logger);
+      registerInterceptors(
+        interceptor, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -84,12 +102,16 @@ describe('Express Framework - Register Interceptors', () => {
     const interceptor = {
       name: 'a custom name',
       // a middleware has not been defined (null)
-      middleware: [(req, res, next) => { next(); }, null],
+      middleware: [(
+        req, res, next,
+      ) => { next(); }, null],
     };
     const framework = express();
 
     expect(() => {
-      registerInterceptors(interceptor, framework, logger);
+      registerInterceptors(
+        interceptor, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -97,12 +119,16 @@ describe('Express Framework - Register Interceptors', () => {
     const interceptor = {
       name: 'a custom name',
       // a middleware is not a function (but a empty object)
-      middleware: [{}, (req, res, next) => { next(); }],
+      middleware: [{}, (
+        req, res, next,
+      ) => { next(); }],
     };
     const framework = express();
 
     expect(() => {
-      registerInterceptors(interceptor, framework, logger);
+      registerInterceptors(
+        interceptor, framework, logger,
+      );
     }).toThrow();
   });
 });

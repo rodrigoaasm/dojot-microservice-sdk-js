@@ -35,9 +35,7 @@ consumer.on('resumed',
 consumer.on('error.connecting',
   () => logger.info('Received error.connecting event'));
 consumer.on('error.processing',
-  (cbId, data) => logger.info(
-    `Received error.processing event (cbId: ${cbId}: data: ${util.inspect(data)})`,
-  ));
+  (cbId, data) => logger.info(`Received error.processing event (cbId: ${cbId}: data: ${util.inspect(data)})`));
 
 const getStatusFunc = () => {
   consumer.getStatus().then((value) => {

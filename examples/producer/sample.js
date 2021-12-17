@@ -47,11 +47,9 @@ const logger = new Logger('sample-producer');
       logger.error(`${err}`);
     });
 
-  logger.debug(
-    `Producer will send a message: ${util.inspect(message, {
-      depth: null,
-    })} in topic ${targetTopic}`,
-  );
+  logger.debug(`Producer will send a message: ${util.inspect(message, {
+    depth: null,
+  })} in topic ${targetTopic}`);
   await producer.produce(targetTopic, JSON.stringify(message));
   logger.debug('Successfully produced the message.');
 

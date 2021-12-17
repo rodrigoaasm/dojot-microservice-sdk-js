@@ -49,7 +49,9 @@ describe("Unit tests of script 'beaconInterceptor.js'", () => {
     const res = {};
     const next = jest.fn();
 
-    expect(beaconInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(beaconInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
 
     expect(onFinished).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledTimes(1);
@@ -68,7 +70,9 @@ describe("Unit tests of script 'beaconInterceptor.js'", () => {
     const next = jest.fn();
 
     expect(() => {
-      beaconInterceptor.middleware(req, res, next);
+      beaconInterceptor.middleware(
+        req, res, next,
+      );
     }).toThrow();
 
     expect(logger.error).toHaveBeenCalledTimes(1);
@@ -80,7 +84,9 @@ describe("Unit tests of script 'beaconInterceptor.js'", () => {
     const req = { id: '123456' };
     const next = jest.fn();
 
-    expect(beaconInterceptor.middleware(req, {}, next)).toBeUndefined();
+    expect(beaconInterceptor.middleware(
+      req, {}, next,
+    )).toBeUndefined();
     expect(onFinished).toHaveBeenCalledTimes(1);
     expect(next).toHaveBeenCalledTimes(1);
 

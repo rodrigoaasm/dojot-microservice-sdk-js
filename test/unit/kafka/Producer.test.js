@@ -113,6 +113,7 @@ describe('Kafka producer', () => {
       deliveryReportFn(undefined, { opaque: '' });
     });
   });
+
   describe('Kafka connection handling', () => {
     it('should connect to Kafka successfully', (done) => {
       /**
@@ -194,7 +195,7 @@ describe('Kafka producer', () => {
         expect(mockKafka.producer.flush).toHaveBeenCalled();
         const mockFlushCbk = mockKafka.producer.flush.mock.calls[0][1];
         mockFlushCbk();
-        return resolve();
+        resolve();
       });
 
       const disconnectCbkPromise = new Promise((resolve) => {
@@ -232,7 +233,7 @@ describe('Kafka producer', () => {
         expect(mockKafka.producer.flush).toHaveBeenCalled();
         const mockFlushCbk = mockKafka.producer.flush.mock.calls[0][1];
         mockFlushCbk('sample-flush-error');
-        return resolve();
+        resolve();
       });
 
       const disconnectCbkPromise = new Promise((resolve) => {
@@ -268,7 +269,7 @@ describe('Kafka producer', () => {
         expect(mockKafka.producer.flush).toHaveBeenCalled();
         const mockFlushCbk = mockKafka.producer.flush.mock.calls[0][1];
         mockFlushCbk();
-        return resolve();
+        resolve();
       });
 
       const disconnectCbkPromise = new Promise((resolve) => {
@@ -306,7 +307,7 @@ describe('Kafka producer', () => {
         expect(mockKafka.producer.flush).toHaveBeenCalled();
         const mockFlushCbk = mockKafka.producer.flush.mock.calls[0][1];
         mockFlushCbk();
-        return resolve();
+        resolve();
       });
 
       const disconnectCbkPromise = new Promise((resolve) => {
@@ -366,15 +367,19 @@ describe('Kafka producer', () => {
       // >> Tested code
       const producer = new Producer(mockConfig);
       producer.isReady = true;
-      producer.produce('sample-topic-prod', 'sample-msg-prod', 'sample-key', 'sample-partition');
+      producer.produce(
+        'sample-topic-prod', 'sample-msg-prod', 'sample-key', 'sample-partition',
+      );
       // << Tested code
 
-      expect(mockKafka.producer.produce).toBeCalledWith('sample-topic-prod',
+      expect(mockKafka.producer.produce).toBeCalledWith(
+        'sample-topic-prod',
         'sample-partition',
         Buffer.from('sample-msg-prod'),
         'sample-key',
         expect.anything(),
-        expect.anything());
+        expect.anything(),
+      );
     });
 
     it('should produce messages with default key and partition', () => {
@@ -384,12 +389,14 @@ describe('Kafka producer', () => {
       producer.produce('sample-topic-prod-default', 'sample-msg-prod-default');
       // << Tested code
 
-      expect(mockKafka.producer.produce).toBeCalledWith('sample-topic-prod-default',
+      expect(mockKafka.producer.produce).toBeCalledWith(
+        'sample-topic-prod-default',
         null,
         Buffer.from('sample-msg-prod-default'),
         null,
         expect.anything(),
-        expect.anything());
+        expect.anything(),
+      );
     });
   });
 });

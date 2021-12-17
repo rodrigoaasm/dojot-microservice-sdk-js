@@ -80,12 +80,10 @@ describe('Logger configuration', () => {
 
     // expected ...
     expect(winston.transports.DailyRotateFile.mock.calls.length).toBe(1);
-    expect(winston.transports.DailyRotateFile).toBeCalledWith(
-      expect.objectContaining({
-        level: 'error',
-        format: jsonFormat,
-      }),
-    );
+    expect(winston.transports.DailyRotateFile).toBeCalledWith(expect.objectContaining({
+      level: 'error',
+      format: jsonFormat,
+    }));
     expect(Logger.sharedLogger.wlogger.add.mock.calls.length).toBe(1);
     expect(Logger.isTransportSet('file')).toBeTruthy();
   });
@@ -160,17 +158,13 @@ describe('Logger configuration', () => {
 
     // replacing
     Logger.setTransport('console', { level: 'debug' });
-    expect(winston.transports.Console).toBeCalledWith(
-      expect.objectContaining({
-        level: 'debug',
-      }),
-    );
+    expect(winston.transports.Console).toBeCalledWith(expect.objectContaining({
+      level: 'debug',
+    }));
     Logger.setTransport('file', { level: 'debug' });
-    expect(winston.transports.DailyRotateFile).toBeCalledWith(
-      expect.objectContaining({
-        level: 'debug',
-      }),
-    );
+    expect(winston.transports.DailyRotateFile).toBeCalledWith(expect.objectContaining({
+      level: 'debug',
+    }));
   });
 
   test('Unset transport with invalid parameter - transport name', () => {
@@ -385,16 +379,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.error.mock.calls.length).toBe(2);
-    expect(logger.logger.error).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.error).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 
   test('Log warning messages', () => {
@@ -407,16 +407,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.warn.mock.calls.length).toBe(2);
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 
   test('Log info messages', () => {
@@ -429,16 +435,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.info.mock.calls.length).toBe(2);
-    expect(logger.logger.info).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.info).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 
   test('Log debug messages', () => {
@@ -451,16 +463,22 @@ describe('Logging messages (verbose mode: disabled)', () => {
 
     // expected
     expect(logger.logger.debug.mock.calls.length).toBe(2);
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.not.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 });
 
@@ -478,16 +496,22 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.error.mock.calls.length).toBe(2);
-    expect(logger.logger.error).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.error).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.error).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 
   test('Log warning messages', () => {
@@ -500,16 +524,22 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.warn.mock.calls.length).toBe(2);
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.warn).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.warn).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 
   test('Log info messages', () => {
@@ -522,16 +552,22 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.info.mock.calls.length).toBe(2);
-    expect(logger.logger.info).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.info).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.info).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 
   test('Log debug messages', () => {
@@ -544,15 +580,21 @@ describe('Logging messages (verbose mode: enabled)', () => {
 
     // expected
     expect(logger.logger.debug.mock.calls.length).toBe(2);
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(1, 'message #1',
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+      1,
+      'message #1',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
-    expect(logger.logger.debug).toHaveBeenNthCalledWith(2, 'message #2',
+      }),
+    );
+    expect(logger.logger.debug).toHaveBeenNthCalledWith(
+      2,
+      'message #2',
       expect.objectContaining({
         line: expect.any(String),
         file: expect.any(String),
-      }));
+      }),
+    );
   });
 });

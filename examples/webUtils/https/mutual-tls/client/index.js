@@ -55,8 +55,6 @@ const timer = setInterval(() => {
 }, 2000);
 
 // Graceful shutdown
-['SIGTERM', 'SIGINT'].forEach(
-  (sig) => process.on(sig, () => {
-    clearInterval(timer);
-  }),
-);
+['SIGTERM', 'SIGINT'].forEach((sig) => process.on(sig, () => {
+  clearInterval(timer);
+}));

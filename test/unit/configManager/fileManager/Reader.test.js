@@ -53,7 +53,9 @@ describe('readUserConfig', () => {
     fs.existsSync.mockReturnValueOnce(true);
     fs.readFileSync.mockReturnValueOnce(data);
 
-    const ret = Reader.readUserConfig('/root/project', './config', 'production.conf');
+    const ret = Reader.readUserConfig(
+      '/root/project', './config', 'production.conf',
+    );
 
     expect(ret).toEqual(data);
     expect(Utils.createFilename).toHaveBeenCalledTimes(1);
@@ -62,7 +64,9 @@ describe('readUserConfig', () => {
   it('should not throw an error when the user configuration file does not exist', () => {
     fs.existsSync.mockReturnValueOnce(false);
 
-    const ret = Reader.readUserConfig('/root/project', './config', 'production.conf');
+    const ret = Reader.readUserConfig(
+      '/root/project', './config', 'production.conf',
+    );
 
     expect(ret).toEqual([]);
     expect(Utils.createFilename).toHaveBeenCalledTimes(1);
@@ -76,7 +80,9 @@ describe('readJson', () => {
     fs.existsSync.mockReturnValueOnce(true);
     fs.readFileSync.mockReturnValueOnce(data);
 
-    const ret = Reader.readJson('/root/project', './path', 'TESTSVC');
+    const ret = Reader.readJson(
+      '/root/project', './path', 'TESTSVC',
+    );
 
     expect(ret).toEqual(dataObj);
     expect(Utils.createFilename).toHaveBeenCalledTimes(1);
@@ -85,7 +91,9 @@ describe('readJson', () => {
   it('should not throw an error when the JSON configuration file does not exist', () => {
     fs.existsSync.mockReturnValueOnce(false);
 
-    const ret = Reader.readJson('/root/project', './path', 'TESTSVC');
+    const ret = Reader.readJson(
+      '/root/project', './path', 'TESTSVC',
+    );
 
     expect(ret).toEqual({});
     expect(Utils.createFilename).toHaveBeenCalledTimes(1);
