@@ -1,7 +1,6 @@
 import * as http from 'http';
 import { TokenSet } from 'openid-client';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { interceptors, interceptors } from './lib/webUtils/framework';
 
 declare module '@dojot/microservice-sdk' {
     namespace Kafka {
@@ -82,6 +81,20 @@ declare module '@dojot/microservice-sdk' {
     }    
 
     module WebUtils {
+        interface TenantInfo {
+            id: string,
+            sigKey: {
+                providerId?: string;
+                providerPriority?: number;
+                kid?: string;
+                status?: string;
+                type?: string;
+                algorithm?: string;
+                publicKey?: string;
+                certificate?: string;
+            }
+        }
+
         interface GenerateArgs {
             payload: Object,
             tenant: string,
@@ -159,21 +172,59 @@ declare module '@dojot/microservice-sdk' {
             function defaultErrorHandler(args: DefaultErrorHandlerArgs): Function;
 
             module interceptors {
-                function beaconInterceptor({
+                interface BeaconInterceptorParams {
                     stateManager: ServiceStateManager,
                     logger: Logger,
                     path: string,
-                }): any;                
-                function jsonBodyParsingInterceptor({ config: any}): any;
-                function paginateInterceptor({ limit: number, maxLimit: number, path: string }): any;
-                function readinessInterceptor({
+                }                
+                function beaconInterceptor(params: BeaconInterceptorParams): any;        
+                
+                function createKeycloakAuthInterceptor(tenants: Array<TenantInfo>, logger: Logger, path: string): any;
+                
+                interface JsonBodyParsingInterceptorParams {
+                    config: any,
+                }
+                function jsonBodyParsingInterceptor(params: JsonBodyParsingInterceptorParams): any;
+
+                interface PaginateInterceptorParams { 
+                    limit: number, 
+                    maxLimit: number,
+                    path: string,
+                }
+                function paginateInterceptor(params: PaginateInterceptorParams): any;
+
+                interface ReadinessInterceptorParams {
                     stateManager: ServiceStateManager, logger: Logger, path: string
-                }): any;
-                function requestIdInterceptor({ path: string }): any;
-                function requestLogInterceptor({ logFormat: string, logger: Logger, path: string}): any
-                function responseCompressInterceptor({ config: any, path: string}): any;
-                function staticFileInterceptor({ baseDirectory: string, staticFilePath: string, path: string }): any;
-                function tokenParsingInterceptor({ignoredPaths: string, path: string}): any;
+                }
+                function readinessInterceptor(params: ReadinessInterceptorParams): any;
+
+                interface RequestIdInterceptorParams { path: string }
+                function requestIdInterceptor(params: ReadinessInterceptorParams): any;
+
+                interface RequestLogInterceptorParams { 
+                    logFormat: string,
+                    logger: Logger,
+                    path: string,
+                }
+                function requestLogInterceptor(params: ReadinessInterceptorParams): any
+
+                interface ResponseCompressInterceptorParams { 
+                    config: any,
+                    path: string,
+                }
+                function responseCompressInterceptor(params: ResponseCompressInterceptorParams): any;
+
+                interface StaticFileInterceptorParams { 
+                    baseDirectory: string,
+                    staticFilePath: string,
+                    path: string,
+                }
+                function staticFileInterceptor(params: StaticFileInterceptorParams): any;
+
+                interface TokenParsingInterceptorParams {
+                    ignoredPaths: string, path: string,
+                }
+                function tokenParsingInterceptor(params: TokenParsingInterceptorParams): any;
             }
         }
 
@@ -212,17 +263,19 @@ declare module '@dojot/microservice-sdk' {
             maxNumberAttempts: number,
         }
 
+        interface DojotClientHttpParams {
+            defaultClientOptions: AxiosRequestConfig,
+            logger: Logger,
+            defaultRetryDelay?: number,
+            defaultMaxNumberAttempts?: number,      
+        }
+
         class DojotClientHttp {
-            constructor({
-                defaultClientOptions: AxiosRequestConfig,
-                logger: Logger,
-                defaultRetryDelay: number,
-                defaultMaxNumberAttempts: number,
-            });
+            constructor(params: DojotClientHttpParams);
             public request( 
                 options: AxiosRequestConfig, 
-                retryDelay: number, 
-                maxNumberAttempts: number
+                retryDelay?: number, 
+                maxNumberAttempts?: number
             ): Promise<AxiosResponse>;
             private retry(
                 requestError: Error,
