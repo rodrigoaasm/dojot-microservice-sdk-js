@@ -28,7 +28,9 @@ describe('Express Framework - default Error Handler', () => {
       };
       const next = jest.fn();
 
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
 
       expect(next.mock.calls.length).toBe(0);
       expect(res.status.mock.calls.length).toBe(1);
@@ -48,7 +50,9 @@ describe('Express Framework - default Error Handler', () => {
       };
       const next = jest.fn();
 
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
 
       expect(next.mock.calls.length).toBe(0);
       expect(res.status.mock.calls.length).toBe(1);
@@ -69,7 +73,9 @@ describe('Express Framework - default Error Handler', () => {
       };
       const next = jest.fn();
 
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
 
       expect(next.mock.calls.length).toBe(0);
       expect(res.status.mock.calls.length).toBe(1);
@@ -91,7 +97,9 @@ describe('Express Framework - default Error Handler', () => {
       };
       const next = jest.fn();
 
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
 
       expect(next.mock.calls.length).toBe(0);
       expect(res.status.mock.calls.length).toBe(1);
@@ -118,7 +126,9 @@ describe('Express Framework - default Error Handler', () => {
       const oldValue = process.env.NODE_ENV;
       process.env.NODE_ENV = 'development';
 
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
 
       process.env.NODE_ENV = oldValue;
 
@@ -146,7 +156,9 @@ describe('Express Framework - default Error Handler', () => {
       };
       const next = jest.fn();
 
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
 
       expect(next.mock.calls.length).toBe(0);
       expect(res.sendStatus.mock.calls.length).toBe(1);
@@ -157,7 +169,9 @@ describe('Express Framework - default Error Handler', () => {
     it('should throw an exception because the error message is not a string', () => {
       expect(() => {
         const customMessage = {};
-        errorHandlerMiddleware(Unauthorized(customMessage), {}, {}, jest.fn());
+        errorHandlerMiddleware(
+          Unauthorized(customMessage), {}, {}, jest.fn(),
+        );
       }).toThrow();
     });
 
@@ -166,7 +180,9 @@ describe('Express Framework - default Error Handler', () => {
       const req = {};
       const res = { headersSent: true };
       const next = jest.fn();
-      errorHandlerMiddleware(error, req, res, next);
+      errorHandlerMiddleware(
+        error, req, res, next,
+      );
       expect(next.mock.calls.length).toBe(1);
     });
   });

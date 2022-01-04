@@ -37,8 +37,12 @@ describe('Express Framework - paginate', () => {
       req.query.limit = `${limit}`;
       req.query.page = '1';
 
-      paginateMiddleware(req, res, next);
-      paginateControlMiddleware(req, res, next);
+      paginateMiddleware(
+        req, res, next,
+      );
+      paginateControlMiddleware(
+        req, res, next,
+      );
 
       expect(next.mock.calls.length).toBe(2);
       expect(req.getPaging).toBeInstanceOf(Function);
@@ -61,8 +65,12 @@ describe('Express Framework - paginate', () => {
       req.query.limit = '0';
       req.query.page = '2';
 
-      paginateMiddleware(req, res, next);
-      paginateControlMiddleware(req, res, next);
+      paginateMiddleware(
+        req, res, next,
+      );
+      paginateControlMiddleware(
+        req, res, next,
+      );
 
       expect(req.query.limit).toBe(limit);
       expect(next.mock.calls.length).toBe(2);

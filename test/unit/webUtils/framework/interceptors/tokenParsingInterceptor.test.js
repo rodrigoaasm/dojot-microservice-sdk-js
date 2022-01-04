@@ -32,7 +32,9 @@ describe("Unit tests of script 'tokenParsingInterceptor.js'", () => {
     req.headers = {};
     req.headers.authorization = `Bearer ${jwt}`;
 
-    expect(tokenParsingInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(tokenParsingInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(req.tenant).toBe('admin');
     expect(next).toHaveBeenCalledTimes(1);
     expect(next.mock.calls[0][0]).toBeUndefined();
@@ -51,7 +53,9 @@ describe("Unit tests of script 'tokenParsingInterceptor.js'", () => {
     req.headers = {};
     req.headers.authorization = `${jwt}`; // missing: "Bearer"
 
-    expect(tokenParsingInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(tokenParsingInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(req.tenant).toBe(undefined);
     expect(next).toHaveBeenCalledTimes(1);
     expect(next.mock.calls[0][0]).toBeInstanceOf(Error);
@@ -67,7 +71,9 @@ describe("Unit tests of script 'tokenParsingInterceptor.js'", () => {
     req.path = '/';
     req.headers = {};
 
-    expect(tokenParsingInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(tokenParsingInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(req.tenant).toBe(undefined);
     expect(next).toHaveBeenCalledTimes(1);
     expect(next.mock.calls[0][0]).toBeInstanceOf(Error);
@@ -87,7 +93,9 @@ describe("Unit tests of script 'tokenParsingInterceptor.js'", () => {
     req.headers = {};
     req.headers.authorization = `Bearer ${jwt}`;
 
-    expect(tokenParsingInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(tokenParsingInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(req.tenant).toBe(undefined);
     expect(next).toHaveBeenCalledTimes(1);
     expect(next.mock.calls[0][0]).toBeInstanceOf(Error);
@@ -105,7 +113,9 @@ describe("Unit tests of script 'tokenParsingInterceptor.js'", () => {
     req.path = '/internal/api/v1/throw-away';
     req.headers = {};
 
-    expect(tokenParsingInterceptor.middleware(req, res, next)).toBeUndefined();
+    expect(tokenParsingInterceptor.middleware(
+      req, res, next,
+    )).toBeUndefined();
     expect(req.tenant).toBe(undefined);
     expect(next).toHaveBeenCalledTimes(1);
     expect(next.mock.calls[0][0]).toBeUndefined();

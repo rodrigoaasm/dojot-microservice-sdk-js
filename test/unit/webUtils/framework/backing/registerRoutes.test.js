@@ -18,7 +18,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -26,7 +28,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -40,7 +44,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -52,7 +58,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -61,7 +69,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(routeArray, framework, logger);
+    registerInterceptors(
+      routeArray, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -75,7 +85,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -83,7 +95,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
     expect(framework.use.mock.calls[0][0]).toBe(`/${route.mountPoint}`);
@@ -96,7 +110,9 @@ describe('Express Framework - Register routes', () => {
       path: ['/custom-path/:some-param'],
       params: [{
         name: 'some-param',
-        trigger: (req, res, next, value, param) => {
+        trigger: (
+          req, res, next, value, param,
+        ) => {
           req.params[param] = value.toUpperCase();
           next();
         },
@@ -104,7 +120,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -112,7 +130,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -134,7 +154,9 @@ describe('Express Framework - Register routes', () => {
 
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -156,7 +178,9 @@ describe('Express Framework - Register routes', () => {
 
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -170,7 +194,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -178,7 +204,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -191,7 +219,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -199,7 +229,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -212,7 +244,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -220,7 +254,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -232,7 +268,9 @@ describe('Express Framework - Register routes', () => {
       path: ['/custom-path/:some-param'],
       params: {
         name: 'some-param',
-        trigger: (req, res, next, value, param) => {
+        trigger: (
+          req, res, next, value, param,
+        ) => {
           req.params[param] = value.toUpperCase();
           next();
         },
@@ -240,7 +278,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -248,7 +288,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -262,7 +304,9 @@ describe('Express Framework - Register routes', () => {
       handlers: {
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }, // params is not an array (but an object)!
     };
@@ -270,7 +314,9 @@ describe('Express Framework - Register routes', () => {
     const framework = express();
     framework.use = jest.fn();
 
-    registerInterceptors(route, framework, logger);
+    registerInterceptors(
+      route, framework, logger,
+    );
 
     expect(framework.use.mock.calls.length).toBe(1);
   });
@@ -284,7 +330,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -293,7 +341,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -306,7 +356,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -315,7 +367,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -328,7 +382,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -337,7 +393,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -348,7 +406,9 @@ describe('Express Framework - Register routes', () => {
       path: ['/custom-path/:some-param'],
       params: {
         // name: 'some-param', /* has not been defined! */
-        trigger: (req, res, next, value, param) => {
+        trigger: (
+          req, res, next, value, param,
+        ) => {
           req.params[param] = value.toUpperCase();
           next();
         },
@@ -356,7 +416,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -365,7 +427,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -376,7 +440,9 @@ describe('Express Framework - Register routes', () => {
       path: ['/custom-path/:some-param'],
       params: {
         name: 123456, /* is not a string! */
-        trigger: (req, res, next, value, param) => {
+        trigger: (
+          req, res, next, value, param,
+        ) => {
           req.params[param] = value.toUpperCase();
           next();
         },
@@ -384,7 +450,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -393,7 +461,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -412,7 +482,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -421,7 +493,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -437,7 +511,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'get',
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -446,7 +522,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -463,7 +541,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -480,7 +560,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -493,7 +575,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         // method: 'get', /* has not been defined */
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -502,7 +586,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -524,7 +610,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -537,7 +625,9 @@ describe('Express Framework - Register routes', () => {
       handlers: [{
         method: 'INVALID', // has an invalid value!
         middleware: [
-          (req, res, next) => { next(); },
+          (
+            req, res, next,
+          ) => { next(); },
         ],
       }],
     };
@@ -546,7 +636,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 
@@ -566,7 +658,9 @@ describe('Express Framework - Register routes', () => {
     framework.use = jest.fn();
 
     expect(() => {
-      registerInterceptors(route, framework, logger);
+      registerInterceptors(
+        route, framework, logger,
+      );
     }).toThrow();
   });
 });

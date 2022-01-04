@@ -22,7 +22,9 @@ function createModule(logger) {
     {
       name: 'token-parsing-interceptor',
       path: '/private',
-      middleware: (req, res, next) => {
+      middleware: (
+        req, res, next,
+      ) => {
         const err = new createError.Unauthorized();
         if (req.headers.authorization) {
           const authHeader = req.headers.authorization.split(' ');
@@ -114,7 +116,9 @@ function createModule(logger) {
         name: 'topic',
         // The trigger is fired so that the parameter value
         // is treated before invoking the middlewares
-        trigger: (req, res, next, value, param) => {
+        trigger: (
+          req, res, next, value, param,
+        ) => {
           req.params[param] = value.toUpperCase();
           // It is necessary to call 'next()' to continue the Express flow
           next();

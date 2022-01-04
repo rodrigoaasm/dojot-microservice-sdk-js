@@ -68,7 +68,9 @@ KafkaMock.KafkaConsumer = class {
 };
 
 expect.extend({
-  toBeWithinRange(received, floor, ceiling) {
+  toBeWithinRange(
+    received, floor, ceiling,
+  ) {
     const pass = received >= floor && received <= ceiling;
     if (pass) {
       return {
@@ -271,9 +273,7 @@ describe('Validates registerCallback', () => {
     expect(Object.keys(consumer.topicMap)).toHaveLength(1);
     expect(consumer.topicMap).toHaveProperty(targetTopic);
     expect(consumer.topicMap[targetTopic]).toHaveLength(1);
-    expect(consumer.topicMap[targetTopic]).toEqual(
-      expect.arrayContaining([expectedEntry]),
-    );
+    expect(consumer.topicMap[targetTopic]).toEqual(expect.arrayContaining([expectedEntry]));
   });
 
   it('using RegExp topic', () => {
@@ -294,9 +294,7 @@ describe('Validates registerCallback', () => {
     // check registerCallback behavior
     expect(consumer.refreshSubscriptions).toHaveBeenCalledTimes(1);
     expect(Object.keys(consumer.topicRegExpArray)).toHaveLength(1);
-    expect(consumer.topicRegExpArray).toEqual(
-      expect.arrayContaining([expectedEntry]),
-    );
+    expect(consumer.topicRegExpArray).toEqual(expect.arrayContaining([expectedEntry]));
   });
 
   it('registries on a repeated topic', () => {
@@ -321,9 +319,8 @@ describe('Validates registerCallback', () => {
     expect(Object.keys(consumer.topicMap)).toHaveLength(1);
     expect(consumer.topicMap).toHaveProperty(targetTopic);
     expect(consumer.topicMap[targetTopic]).toHaveLength(2);
-    expect(consumer.topicMap[targetTopic]).toEqual(
-      expect.arrayContaining([mockedEntry, expectedEntry]),
-    );
+    expect(consumer.topicMap[targetTopic])
+      .toEqual(expect.arrayContaining([mockedEntry, expectedEntry]));
   });
 });
 
@@ -379,9 +376,7 @@ describe('Validates unregisterCallback', () => {
     expect(consumer.topicMap[entryExp1]).toHaveLength(2);
     expect(consumer.topicMap[entryExp2]).toHaveLength(1);
     expect(consumer.topicRegExpArray).toHaveLength(1);
-    expect(consumer.topicRegExpArray).toEqual(
-      expect.arrayContaining([entryRegExp1]),
-    );
+    expect(consumer.topicRegExpArray).toEqual(expect.arrayContaining([entryRegExp1]));
   });
 });
 
@@ -478,14 +473,10 @@ describe('handle kafka (Default Consumer)', () => {
     };
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData);
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
 
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
   });
 
   test('Message processing with RegEx and explicit topic', async () => {
@@ -500,26 +491,14 @@ describe('handle kafka (Default Consumer)', () => {
     };
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[1].callback).toHaveBeenCalledWith(
-      publishedData,
-    );
+    expect(consumer.topicRegExpArray[1].callback).toHaveBeenCalledWith(publishedData);
     expect(consumer.topicRegExpArray[1].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][1].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][1].callback,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][1].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][1].callback).toHaveBeenCalledTimes(1);
 
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
   });
 
   test('Message processing with failure', async () => {
@@ -534,26 +513,14 @@ describe('handle kafka (Default Consumer)', () => {
     };
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[2].callback).toHaveBeenCalledWith(
-      publishedData,
-    );
+    expect(consumer.topicRegExpArray[2].callback).toHaveBeenCalledWith(publishedData);
     expect(consumer.topicRegExpArray[2].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][1].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][1].callback,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][1].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][1].callback).toHaveBeenCalledTimes(1);
 
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -601,19 +568,11 @@ describe('handle kafka (Processing Retry and Not Commit on Failure)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData);
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(2);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(2);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(2);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
   });
 
   test('Message processing that succeeds in the second retry', async () => {
@@ -649,19 +608,11 @@ describe('handle kafka (Processing Retry and Not Commit on Failure)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData);
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(3);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
   });
 
   test('Message processing that fails in all retries', async () => {
@@ -692,25 +643,15 @@ describe('handle kafka (Processing Retry and Not Commit on Failure)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData);
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledWith(publishedData);
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(3);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(consumer.finish).toHaveBeenCalled();
     expect(errorHandler).toHaveBeenCalled();
-    expect(errorHandler).toHaveBeenCalledWith(
-      consumer.topicRegExpArray[0].id,
-      publishedData,
-    );
+    expect(errorHandler).toHaveBeenCalledWith(consumer.topicRegExpArray[0].id,
+      publishedData);
   });
 });
 
@@ -759,20 +700,13 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
     expect(ack1Return).toBeTruthy();
     expect(ack2Return).toBeTruthy();
   });
@@ -806,20 +740,13 @@ describe('handle kafka (Async Commit)', () => {
     const ack2Return = ack2();
     const ack1Return = ack1();
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
     expect(ack1Return).toBeTruthy();
     expect(ack2Return).toBeTruthy();
   });
@@ -845,20 +772,13 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
   });
 
   test('Pending acknowledgements (one)', async () => {
@@ -886,20 +806,13 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(ackReturn).toBeTruthy();
   });
 
@@ -930,20 +843,13 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(ack1Return).toBeTruthy();
     expect(ack2Return).toBeFalsy();
   });
@@ -975,20 +881,13 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(ack1Return).toBeTruthy();
     expect(ack2Return).toBeFalsy();
   });
@@ -1019,29 +918,18 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(3);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(errorHandler).toHaveBeenCalledTimes(2);
-    expect(errorHandler).toHaveBeenCalledWith(
-      consumer.topicRegExpArray[0].id,
-      publishedData,
-    );
-    expect(errorHandler).toHaveBeenCalledWith(
-      consumer.topicMap[publishedData.topic][0].id,
-      publishedData,
-    );
+    expect(errorHandler).toHaveBeenCalledWith(consumer.topicRegExpArray[0].id,
+      publishedData);
+    expect(errorHandler).toHaveBeenCalledWith(consumer.topicMap[publishedData.topic][0].id,
+      publishedData);
   });
 
   test('Message processing that fails for all retries of a given callback (regex topic)', async () => {
@@ -1072,25 +960,16 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(errorHandler).toHaveBeenCalledTimes(1);
-    expect(errorHandler).toHaveBeenCalledWith(
-      consumer.topicRegExpArray[0].id,
-      publishedData,
-    );
+    expect(errorHandler).toHaveBeenCalledWith(consumer.topicRegExpArray[0].id,
+      publishedData);
     expect(ackReturn).toBeTruthy();
   });
 
@@ -1124,25 +1003,16 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(3);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(3);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(errorHandler).toHaveBeenCalledTimes(1);
-    expect(errorHandler).toHaveBeenCalledWith(
-      consumer.topicMap[publishedData.topic][0].id,
-      publishedData,
-    );
+    expect(errorHandler).toHaveBeenCalledWith(consumer.topicMap[publishedData.topic][0].id,
+      publishedData);
     expect(ackReturn).toBeTruthy();
   });
 
@@ -1180,20 +1050,13 @@ describe('handle kafka (Async Commit)', () => {
 
     consumer.invokeInterestedCallbacks(publishedData);
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(2);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(2);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).toHaveBeenCalledTimes(1);
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(2);
+    expect(consumer.commitManager.notifyFinishedProcessing).toHaveBeenCalledTimes(1);
     expect(ack1Return).toBeTruthy();
     expect(ack2Return).toBeTruthy();
   });
@@ -1234,20 +1097,13 @@ describe('handle kafka (Async Commit)', () => {
     const ack1Return = ack1();
     const ack2Return = ack2();
 
-    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(
-      publishedData,
-      expect.any(Function),
-    );
+    expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledWith(publishedData,
+      expect.any(Function));
     expect(consumer.topicRegExpArray[0].callback).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledWith(publishedData, expect.any(Function));
-    expect(
-      consumer.topicMap[publishedData.topic][0].callback,
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      consumer.commitManager.notifyFinishedProcessing,
-    ).not.toHaveBeenCalled();
+    expect(consumer.topicMap[publishedData.topic][0].callback)
+      .toHaveBeenCalledWith(publishedData, expect.any(Function));
+    expect(consumer.topicMap[publishedData.topic][0].callback).toHaveBeenCalledTimes(1);
+    expect(consumer.commitManager.notifyFinishedProcessing).not.toHaveBeenCalled();
     expect(ack1Return).toBeFalsy();
     expect(ack2Return).toBeFalsy();
   });
@@ -1359,8 +1215,12 @@ describe('Refresh subscription', () => {
       expect.toBeWithinRange(8000, 9000),
       4,
     );
-    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000, 5);
-    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10000, 6);
+    expect(setTimeout).toHaveBeenCalledWith(
+      expect.any(Function), 10000, 5,
+    );
+    expect(setTimeout).toHaveBeenCalledWith(
+      expect.any(Function), 10000, 6,
+    );
 
     expect(consumer.consumer.unsubscribe).toHaveBeenCalledTimes(7);
     expect(consumer.consumer.subscribe).toHaveBeenCalledTimes(7);
@@ -1405,10 +1265,8 @@ test('Rebalance - revoke partitions', () => {
   consumer.commitManager = new CommitManagerMock();
   consumer.msgQueue = AsyncMock.queue(jest.fn());
 
-  consumer.onRebalance(
-    { code: KafkaMock.CODES.ERRORS.ERR__REVOKE_PARTITIONS },
-    {},
-  );
+  consumer.onRebalance({ code: KafkaMock.CODES.ERRORS.ERR__REVOKE_PARTITIONS },
+    {});
 
   expect(consumer.consumer.unassign).toHaveBeenCalledTimes(1);
   expect(consumer.commitManager.onRebalance).toHaveBeenCalledTimes(1);
@@ -1424,10 +1282,8 @@ test('Rebalance - revoke partitions: paused case', () => {
   consumer.msgQueue = AsyncMock.queue(jest.fn());
   consumer.isPaused = true;
 
-  consumer.onRebalance(
-    { code: KafkaMock.CODES.ERRORS.ERR__REVOKE_PARTITIONS },
-    {},
-  );
+  consumer.onRebalance({ code: KafkaMock.CODES.ERRORS.ERR__REVOKE_PARTITIONS },
+    {});
 
   expect(consumer.consumer.unassign).toHaveBeenCalledTimes(1);
   expect(consumer.commitManager.onRebalance).toHaveBeenCalledTimes(1);
@@ -1439,9 +1295,7 @@ test('Rebalance - revoke partitions: paused case', () => {
 test('Rebalance - assign partitions', () => {
   const consumer = new Consumer({});
   consumer.consumer.assign = jest.fn();
-  consumer.onRebalance(
-    { code: KafkaMock.CODES.ERRORS.ERR__ASSIGN_PARTITIONS },
-    [1, 3, 5],
-  );
+  consumer.onRebalance({ code: KafkaMock.CODES.ERRORS.ERR__ASSIGN_PARTITIONS },
+    [1, 3, 5]);
   expect(consumer.consumer.assign).toHaveBeenCalledWith([1, 3, 5]);
 });

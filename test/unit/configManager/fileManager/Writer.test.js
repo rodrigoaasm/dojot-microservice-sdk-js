@@ -16,9 +16,13 @@ describe('writeJson', () => {
     const data = { testParam: 10 };
     const dataInJson = jsonStringify(data);
 
-    Writer.writeJson('/root/project', './config', 'TESTSVC', data);
+    Writer.writeJson(
+      '/root/project', './config', 'TESTSVC', data,
+    );
 
-    expect(Utils.createFilename).toHaveBeenCalledWith('/root/project', './config', 'TESTSVC.json');
+    expect(Utils.createFilename).toHaveBeenCalledWith(
+      '/root/project', './config', 'TESTSVC.json',
+    );
     expect(fs.writeFileSync).toHaveBeenCalledWith('/root/project/config/testsvc.json', dataInJson);
   });
 });

@@ -173,7 +173,9 @@ describe('Manager', () => {
       expect.assertions(4);
 
       manager.registerService(service);
-      manager.addHealthChecker(service, healthChecker, interval);
+      manager.addHealthChecker(
+        service, healthChecker, interval,
+      );
 
       expect(manager.services.size).toBe(1);
       expect(manager.services.get(service)).toBeDefined();
@@ -186,15 +188,21 @@ describe('Manager', () => {
 
     it('should not add a new health checker - there already is one registered for the service', (done) => {
       manager.registerService(service);
-      manager.addHealthChecker(service, healthChecker, interval);
-      expect(() => manager.addHealthChecker(service, healthChecker, interval)).toThrow();
+      manager.addHealthChecker(
+        service, healthChecker, interval,
+      );
+      expect(() => manager.addHealthChecker(
+        service, healthChecker, interval,
+      )).toThrow();
 
       done();
     });
 
 
     it('should not add a new health checker - service not registered', (done) => {
-      expect(() => manager.addHealthChecker(service, healthChecker, interval)).toThrow();
+      expect(() => manager.addHealthChecker(
+        service, healthChecker, interval,
+      )).toThrow();
 
       done();
     });
@@ -202,7 +210,9 @@ describe('Manager', () => {
     describe('setInterval function', () => {
       beforeEach(() => {
         manager.registerService(service);
-        manager.addHealthChecker(service, healthChecker, interval);
+        manager.addHealthChecker(
+          service, healthChecker, interval,
+        );
       });
 
       it('should execute the health checker function', (done) => {
