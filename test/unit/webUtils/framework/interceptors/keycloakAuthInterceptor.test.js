@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-const createKeycloakAuthInterceptor = require('../../../../../lib/webUtils/framework/interceptors/keycloakAuthInterceptor');
+const {
+  createKeycloakAuthInterceptor,
+  createKeycloakAuthInterceptorWithFilter,
+} = require('../../../../../lib/webUtils/framework/interceptors/keycloakAuthInterceptor');
 
 const mockLogger = {
   error: jest.fn(),
@@ -47,9 +50,9 @@ const tenants = [{
 }];
 
 describe('keycloakAuthInterceptor', () => {
-  const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+  it('Should authorized the request ', () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
 
-  it('Should authorized the request', () => {
     const token = jwt.sign(
       { iss: 'auth/realms/test' },
       privateKey,
@@ -73,6 +76,8 @@ describe('keycloakAuthInterceptor', () => {
   });
 
   it('Should not authorize the request when the authorization header does not follow the bearer format ', () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+
     const token = jwt.sign(
       { iss: 'auth/realms/test' },
       privateKey,
@@ -97,7 +102,29 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(2);
   });
 
+  it('Should not authorize the request when happen any error.', () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+
+    const request = {
+      headers: {
+        authorization: undefined,
+      },
+    };
+
+    try {
+      keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
+    } catch (httpError) {
+      expect(httpError).toBeDefined();
+    }
+
+    expect.assertions(1);
+  });
+
   it('Should not authorize the request when the tenant does not exist ', () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+
     const token = jwt.sign(
       { iss: 'auth/realms/test_error' },
       privateKey,
@@ -122,21 +149,64 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(2);
   });
 
-  it('Should not authorize the request when happen any error.', () => {
+  it('Should authorized the request when the filter function return a valid tenant', () => {
+    const filter = () => ({
+      id: 'test',
+      signatureKey: {
+        certificate: 'MIIDmTCCAoGgAwIBAgIUOMd65CpRqdo3cplYmLqD1hr3b34wDQYJKoZIhvcNAQELBQAwXDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAk1HMRMwEQYDVQQHDApJdGFqdWLDg8KhMQ0wCwYDVQQKDARDUFFEMQ0wCwYDVQQLDARDUFFEMQ0wCwYDVQQDDARDUFFEMB4XDTIxMTIxMzExMTY0NloXDTMxMTIxMTExMTY0NlowXDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAk1HMRMwEQYDVQQHDApJdGFqdWLDg8KhMQ0wCwYDVQQKDARDUFFEMQ0wCwYDVQQLDARDUFFEMQ0wCwYDVQQDDARDUFFEMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4R9mBEIaygmSpF+4FStSpuM3ssiJmfclPuSjEa1SxK9IhBGq6ZPuLQxJ9twgA01mQaYxBcSib9ahoCS7j5hHvs4gcweh5F0xX5NCWZ12wUagXzW70042TRMVu1rpji9iw4123JGJgPzygBo0J86j5T9qSXmcq3gWGIvrZcsyIK0n1IiqDkr5G4yaIK0tegM/jQVALDMVj4jqU9hO4C2LB3r+uKeOBirRqR9fgBdOiPw3+T3uUXXeg4EdK1v5p1roklBKOlBiaIW9gsj5ossBNcwpYyns5pxIrgsUvAudibCAyrjBb/QnY53K5CzT5SExGk8HnE5IQ75bFRhG7JSuMwIDAQABo1MwUTAdBgNVHQ4EFgQUHdbxNovwN5pSrBiuZEqAgjt45nowHwYDVR0jBBgwFoAUHdbxNovwN5pSrBiuZEqAgjt45nowDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEATRtjaoGMIwuEGEMcmi8aNiQXWsGkzHN7a9KRHfKMRYZgrdnXjcNAtHaT33SgiQTywt+GfISkZ8JCG2CdKLTkA94CTq5j+noWWhpjk9cX394wK37eUXSariZ+IhghlBzuEzTIvTYwgveBqNSlup1MlFieqOhiXXTiCGn2IaoYIam1O+bOhuNyrdgmOpClCT3DAuqq9uwG2N1g7Y3sSnFyNpFls9gSQE8LVowfYxuTDiXDUrNxzKjdqvHPiVIbkLl/c9Pt6G/UyIJ08nJgvSxsoNkR/A591gNn/kMGNwMTD5yUg/MKb9e9jyAIFtz5MpxSQuVQWzarwbGGE/TwDIOqnQ==',
+        algorithm: 'RS512',
+      },
+    });
+
+    const token = jwt.sign(
+      { iss: 'auth/realms/filtered_tenant' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+
     const request = {
       headers: {
-        authorization: undefined,
+        authorization: `Bearer ${token}`,
+      },
+    };
+    const next = (error) => {
+      expect(error).toBeUndefined();
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptorWithFilter(filter, mockLogger);
+
+    keycloakAuthInterceptor.middleware(
+      request, {}, next,
+    );
+
+    expect.assertions(1);
+  });
+
+  it('Should not authorize the request when the filter function return undefined', () => {
+    const filter = () => undefined;
+
+    const token = jwt.sign(
+      { iss: 'auth/realms/filtered_error' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
       },
     };
 
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptorWithFilter(filter, mockLogger);
     try {
       keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
-      expect(httpError).toBeDefined();
+      expect(httpError.responseJSON.error).toEqual('Unauthorized access');
+      expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
     }
 
-    expect.assertions(1);
+    expect.assertions(2);
   });
 });
