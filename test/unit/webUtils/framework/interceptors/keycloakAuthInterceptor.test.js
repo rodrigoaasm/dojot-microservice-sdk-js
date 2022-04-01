@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken');
 
+const mockDojotHttpClient = {
+  request: jest.fn(),
+};
+
+jest.mock('../../../../../lib/webUtils/DojotClientHttp',
+  () => jest.fn().mockImplementation(() => mockDojotHttpClient));
+
 const {
   createKeycloakAuthInterceptor,
   createKeycloakAuthInterceptorWithFilter,
@@ -40,7 +47,6 @@ mbmPeT9gnYiXYRE0xp1lLGPrd8MdPLp/SNU6s+VFbdmEVorLnE28/Ra2CTOQkIdG
 ZpVt/Uei5cBM57E+phH4Xh1JT1wQRJlXrx1pYDVZ4XYnD9TrV5RhWw==
 -----END RSA PRIVATE KEY-----`;
 
-
 const tenants = [{
   id: 'test',
   signatureKey: {
@@ -50,7 +56,7 @@ const tenants = [{
 }];
 
 describe('keycloakAuthInterceptor', () => {
-  it('Should authorized the request ', () => {
+  it('Should authorized the request ', async () => {
     const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
 
     const token = jwt.sign(
@@ -68,14 +74,14 @@ describe('keycloakAuthInterceptor', () => {
       expect(error).toBeUndefined();
     };
 
-    keycloakAuthInterceptor.middleware(
+    await keycloakAuthInterceptor.middleware(
       request, {}, next,
     );
 
     expect.assertions(1);
   });
 
-  it('Should not authorize the request when the authorization header does not follow the bearer format ', () => {
+  it('Should not authorize the request when the authorization header does not follow the bearer format ', async () => {
     const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
 
     const token = jwt.sign(
@@ -91,7 +97,7 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
@@ -102,7 +108,7 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(2);
   });
 
-  it('Should not authorize the request when happen any error.', () => {
+  it('Should not authorize the request when happen any error.', async () => {
     const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
 
     const request = {
@@ -112,7 +118,7 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
@@ -122,7 +128,7 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(1);
   });
 
-  it('Should not authorize the request when the tenant does not exist ', () => {
+  it('Should not authorize the request when the tenant does not exist ', async () => {
     const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
 
     const token = jwt.sign(
@@ -138,7 +144,7 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
@@ -149,7 +155,7 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(2);
   });
 
-  it('Should authorized the request when the filter function return a valid tenant', () => {
+  it('Should authorized the request when the filter function return a valid tenant', async () => {
     const filter = () => ({
       id: 'test',
       signatureKey: {
@@ -175,14 +181,14 @@ describe('keycloakAuthInterceptor', () => {
 
     const keycloakAuthInterceptor = createKeycloakAuthInterceptorWithFilter(filter, mockLogger);
 
-    keycloakAuthInterceptor.middleware(
+    await keycloakAuthInterceptor.middleware(
       request, {}, next,
     );
 
     expect.assertions(1);
   });
 
-  it('Should not authorize the request when the filter function return undefined', () => {
+  it('Should not authorize the request when the filter function return undefined', async () => {
     const filter = () => undefined;
 
     const token = jwt.sign(
@@ -199,7 +205,112 @@ describe('keycloakAuthInterceptor', () => {
 
     const keycloakAuthInterceptor = createKeycloakAuthInterceptorWithFilter(filter, mockLogger);
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
+    } catch (httpError) {
+      expect(httpError.responseJSON.error).toEqual('Unauthorized access');
+      expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
+    }
+
+    expect.assertions(2);
+  });
+
+  it('Should not authorize request when access token belongs to master tenant and options.allowMasterTenant = false', async () => {
+    const token = jwt.sign(
+      { iss: 'auth/realms/master' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(
+      [],
+      mockLogger,
+      '/',
+      {
+        allowMasterTenant: false,
+      },
+    );
+    try {
+      await keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
+    } catch (httpError) {
+      expect(httpError.responseJSON.error).toEqual('Unauthorized access');
+      expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
+    }
+
+    expect.assertions(2);
+  });
+
+  it('Should verify the access token online and authorize request when the tenant does not exist in the list, options.checkOnline = true and verification is ok', async () => {
+    mockDojotHttpClient.request.mockResolvedValue({
+      status: 200,
+    });
+    const token = jwt.sign(
+      { iss: 'auth/realms/test' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(
+      [],
+      mockLogger,
+      '/',
+      {
+        verifyOnline: true,
+        configKeycloak: 'http://localhost:8080',
+      },
+    );
+    const next = (error) => {
+      expect(error).toBeUndefined();
+    };
+
+    await keycloakAuthInterceptor.middleware(
+      request, {}, next,
+    );
+
+    expect.assertions(1);
+  });
+
+  it('Should verify the access token online and not authorize request when the tenant does not exist in the list, options.checkOnline = true and verification is not ok', async () => {
+    mockDojotHttpClient.request.mockResolvedValue({
+      status: 401,
+    });
+    const token = jwt.sign(
+      { iss: 'auth/realms/test' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(
+      [],
+      mockLogger,
+      '/',
+      {
+        verifyOnline: true,
+        configKeycloak: 'http://localhost:8080',
+      },
+    );
+
+    try {
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
