@@ -1,6 +1,16 @@
 const jwt = require('jsonwebtoken');
 
-const createKeycloakAuthInterceptor = require('../../../../../lib/webUtils/framework/interceptors/keycloakAuthInterceptor');
+const mockDojotHttpClient = {
+  request: jest.fn(),
+};
+
+jest.mock('../../../../../lib/webUtils/DojotClientHttp',
+  () => jest.fn().mockImplementation(() => mockDojotHttpClient));
+
+const {
+  createKeycloakAuthInterceptor,
+  createKeycloakAuthInterceptorWithFilter,
+} = require('../../../../../lib/webUtils/framework/interceptors/keycloakAuthInterceptor');
 
 const mockLogger = {
   error: jest.fn(),
@@ -37,19 +47,18 @@ mbmPeT9gnYiXYRE0xp1lLGPrd8MdPLp/SNU6s+VFbdmEVorLnE28/Ra2CTOQkIdG
 ZpVt/Uei5cBM57E+phH4Xh1JT1wQRJlXrx1pYDVZ4XYnD9TrV5RhWw==
 -----END RSA PRIVATE KEY-----`;
 
-
 const tenants = [{
   id: 'test',
-  sigKey: {
+  signatureKey: {
     certificate: 'MIIDmTCCAoGgAwIBAgIUOMd65CpRqdo3cplYmLqD1hr3b34wDQYJKoZIhvcNAQELBQAwXDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAk1HMRMwEQYDVQQHDApJdGFqdWLDg8KhMQ0wCwYDVQQKDARDUFFEMQ0wCwYDVQQLDARDUFFEMQ0wCwYDVQQDDARDUFFEMB4XDTIxMTIxMzExMTY0NloXDTMxMTIxMTExMTY0NlowXDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAk1HMRMwEQYDVQQHDApJdGFqdWLDg8KhMQ0wCwYDVQQKDARDUFFEMQ0wCwYDVQQLDARDUFFEMQ0wCwYDVQQDDARDUFFEMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4R9mBEIaygmSpF+4FStSpuM3ssiJmfclPuSjEa1SxK9IhBGq6ZPuLQxJ9twgA01mQaYxBcSib9ahoCS7j5hHvs4gcweh5F0xX5NCWZ12wUagXzW70042TRMVu1rpji9iw4123JGJgPzygBo0J86j5T9qSXmcq3gWGIvrZcsyIK0n1IiqDkr5G4yaIK0tegM/jQVALDMVj4jqU9hO4C2LB3r+uKeOBirRqR9fgBdOiPw3+T3uUXXeg4EdK1v5p1roklBKOlBiaIW9gsj5ossBNcwpYyns5pxIrgsUvAudibCAyrjBb/QnY53K5CzT5SExGk8HnE5IQ75bFRhG7JSuMwIDAQABo1MwUTAdBgNVHQ4EFgQUHdbxNovwN5pSrBiuZEqAgjt45nowHwYDVR0jBBgwFoAUHdbxNovwN5pSrBiuZEqAgjt45nowDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEATRtjaoGMIwuEGEMcmi8aNiQXWsGkzHN7a9KRHfKMRYZgrdnXjcNAtHaT33SgiQTywt+GfISkZ8JCG2CdKLTkA94CTq5j+noWWhpjk9cX394wK37eUXSariZ+IhghlBzuEzTIvTYwgveBqNSlup1MlFieqOhiXXTiCGn2IaoYIam1O+bOhuNyrdgmOpClCT3DAuqq9uwG2N1g7Y3sSnFyNpFls9gSQE8LVowfYxuTDiXDUrNxzKjdqvHPiVIbkLl/c9Pt6G/UyIJ08nJgvSxsoNkR/A591gNn/kMGNwMTD5yUg/MKb9e9jyAIFtz5MpxSQuVQWzarwbGGE/TwDIOqnQ==',
     algorithm: 'RS512',
   },
 }];
 
 describe('keycloakAuthInterceptor', () => {
-  const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+  it('Should authorized the request ', async () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
 
-  it('Should authorized the request', () => {
     const token = jwt.sign(
       { iss: 'auth/realms/test' },
       privateKey,
@@ -65,14 +74,16 @@ describe('keycloakAuthInterceptor', () => {
       expect(error).toBeUndefined();
     };
 
-    keycloakAuthInterceptor.middleware(
+    await keycloakAuthInterceptor.middleware(
       request, {}, next,
     );
 
     expect.assertions(1);
   });
 
-  it('Should not authorize the request when the authorization header does not follow the bearer format ', () => {
+  it('Should not authorize the request when the authorization header does not follow the bearer format ', async () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+
     const token = jwt.sign(
       { iss: 'auth/realms/test' },
       privateKey,
@@ -86,7 +97,7 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
@@ -97,7 +108,29 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(2);
   });
 
-  it('Should not authorize the request when the tenant does not exist ', () => {
+  it('Should not authorize the request when happen any error.', async () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+
+    const request = {
+      headers: {
+        authorization: undefined,
+      },
+    };
+
+    try {
+      await keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
+    } catch (httpError) {
+      expect(httpError).toBeDefined();
+    }
+
+    expect.assertions(1);
+  });
+
+  it('Should not authorize the request when the tenant does not exist ', async () => {
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(tenants, mockLogger);
+
     const token = jwt.sign(
       { iss: 'auth/realms/test_error' },
       privateKey,
@@ -111,7 +144,7 @@ describe('keycloakAuthInterceptor', () => {
     };
 
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
@@ -122,21 +155,169 @@ describe('keycloakAuthInterceptor', () => {
     expect.assertions(2);
   });
 
-  it('Should not authorize the request when happen any error.', () => {
+  it('Should authorized the request when the filter function return a valid tenant', async () => {
+    const filter = () => ({
+      id: 'test',
+      signatureKey: {
+        certificate: 'MIIDmTCCAoGgAwIBAgIUOMd65CpRqdo3cplYmLqD1hr3b34wDQYJKoZIhvcNAQELBQAwXDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAk1HMRMwEQYDVQQHDApJdGFqdWLDg8KhMQ0wCwYDVQQKDARDUFFEMQ0wCwYDVQQLDARDUFFEMQ0wCwYDVQQDDARDUFFEMB4XDTIxMTIxMzExMTY0NloXDTMxMTIxMTExMTY0NlowXDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAk1HMRMwEQYDVQQHDApJdGFqdWLDg8KhMQ0wCwYDVQQKDARDUFFEMQ0wCwYDVQQLDARDUFFEMQ0wCwYDVQQDDARDUFFEMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4R9mBEIaygmSpF+4FStSpuM3ssiJmfclPuSjEa1SxK9IhBGq6ZPuLQxJ9twgA01mQaYxBcSib9ahoCS7j5hHvs4gcweh5F0xX5NCWZ12wUagXzW70042TRMVu1rpji9iw4123JGJgPzygBo0J86j5T9qSXmcq3gWGIvrZcsyIK0n1IiqDkr5G4yaIK0tegM/jQVALDMVj4jqU9hO4C2LB3r+uKeOBirRqR9fgBdOiPw3+T3uUXXeg4EdK1v5p1roklBKOlBiaIW9gsj5ossBNcwpYyns5pxIrgsUvAudibCAyrjBb/QnY53K5CzT5SExGk8HnE5IQ75bFRhG7JSuMwIDAQABo1MwUTAdBgNVHQ4EFgQUHdbxNovwN5pSrBiuZEqAgjt45nowHwYDVR0jBBgwFoAUHdbxNovwN5pSrBiuZEqAgjt45nowDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEATRtjaoGMIwuEGEMcmi8aNiQXWsGkzHN7a9KRHfKMRYZgrdnXjcNAtHaT33SgiQTywt+GfISkZ8JCG2CdKLTkA94CTq5j+noWWhpjk9cX394wK37eUXSariZ+IhghlBzuEzTIvTYwgveBqNSlup1MlFieqOhiXXTiCGn2IaoYIam1O+bOhuNyrdgmOpClCT3DAuqq9uwG2N1g7Y3sSnFyNpFls9gSQE8LVowfYxuTDiXDUrNxzKjdqvHPiVIbkLl/c9Pt6G/UyIJ08nJgvSxsoNkR/A591gNn/kMGNwMTD5yUg/MKb9e9jyAIFtz5MpxSQuVQWzarwbGGE/TwDIOqnQ==',
+        algorithm: 'RS512',
+      },
+    });
+
+    const token = jwt.sign(
+      { iss: 'auth/realms/filtered_tenant' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+
     const request = {
       headers: {
-        authorization: undefined,
+        authorization: `Bearer ${token}`,
+      },
+    };
+    const next = (error) => {
+      expect(error).toBeUndefined();
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptorWithFilter(filter, mockLogger);
+
+    await keycloakAuthInterceptor.middleware(
+      request, {}, next,
+    );
+
+    expect.assertions(1);
+  });
+
+  it('Should not authorize the request when the filter function return undefined', async () => {
+    const filter = () => undefined;
+
+    const token = jwt.sign(
+      { iss: 'auth/realms/filtered_error' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
       },
     };
 
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptorWithFilter(filter, mockLogger);
     try {
-      keycloakAuthInterceptor.middleware(
+      await keycloakAuthInterceptor.middleware(
         request, {}, () => {},
       );
     } catch (httpError) {
-      expect(httpError).toBeDefined();
+      expect(httpError.responseJSON.error).toEqual('Unauthorized access');
+      expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
     }
 
+    expect.assertions(2);
+  });
+
+  it('Should not authorize request when access token belongs to master tenant and options.allowMasterTenant = false', async () => {
+    const token = jwt.sign(
+      { iss: 'auth/realms/master' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(
+      [],
+      mockLogger,
+      '/',
+      {
+        allowMasterTenant: false,
+      },
+    );
+    try {
+      await keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
+    } catch (httpError) {
+      expect(httpError.responseJSON.error).toEqual('Unauthorized access');
+      expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
+    }
+
+    expect.assertions(2);
+  });
+
+  it('Should verify the access token online and authorize request when the tenant does not exist in the list, options.checkOnline = true and verification is ok', async () => {
+    mockDojotHttpClient.request.mockResolvedValue({
+      status: 200,
+    });
+    const token = jwt.sign(
+      { iss: 'auth/realms/test' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(
+      [],
+      mockLogger,
+      '/',
+      {
+        verifyOnline: true,
+        configKeycloak: 'http://localhost:8080',
+      },
+    );
+    const next = (error) => {
+      expect(error).toBeUndefined();
+    };
+
+    await keycloakAuthInterceptor.middleware(
+      request, {}, next,
+    );
+
     expect.assertions(1);
+  });
+
+  it('Should verify the access token online and not authorize request when the tenant does not exist in the list, options.checkOnline = true and verification is not ok', async () => {
+    mockDojotHttpClient.request.mockResolvedValue({
+      status: 401,
+    });
+    const token = jwt.sign(
+      { iss: 'auth/realms/test' },
+      privateKey,
+      { expiresIn: 200, header: { alg: 'RS512' } },
+    );
+    const request = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    const keycloakAuthInterceptor = createKeycloakAuthInterceptor(
+      [],
+      mockLogger,
+      '/',
+      {
+        verifyOnline: true,
+        configKeycloak: 'http://localhost:8080',
+      },
+    );
+
+    try {
+      await keycloakAuthInterceptor.middleware(
+        request, {}, () => {},
+      );
+    } catch (httpError) {
+      expect(httpError.responseJSON.error).toEqual('Unauthorized access');
+      expect(httpError.responseJSON.detail).toEqual('Tenant not found or invalid');
+    }
+
+    expect.assertions(2);
   });
 });
