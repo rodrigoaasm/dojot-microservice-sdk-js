@@ -37,7 +37,7 @@ describe('DojotClientHttp', () => {
     dojotClientHttp.doRequest = (
       options, resolve, reject, configRetryRequest,
     ) => {
-      expect(configRetryRequest.attempts).toEqual(0);
+      expect(configRetryRequest.attempts).toEqual(1);
       expect(configRetryRequest.retryDelay).toEqual(5000);
       expect(configRetryRequest.maxNumberAttempts).toEqual(3);
       resolve();
@@ -50,7 +50,7 @@ describe('DojotClientHttp', () => {
     dojotClientHttp.doRequest = (
       options, resolve, reject, configRetryRequest,
     ) => {
-      expect(configRetryRequest.attempts).toEqual(0);
+      expect(configRetryRequest.attempts).toEqual(1);
       expect(configRetryRequest.retryDelay).toEqual(7000);
       expect(configRetryRequest.maxNumberAttempts).toEqual(7);
       resolve();
@@ -73,7 +73,10 @@ describe('DojotClientHttp', () => {
     const reject = () => {};
 
     dojotClientHttp.doRequest(
-      {}, resolve, reject, {
+      {},
+      resolve,
+      reject,
+      {
         attempts: 0,
         retryDelay: 5000,
         maxNumberAttempts: 3,
@@ -85,8 +88,6 @@ describe('DojotClientHttp', () => {
   it('Should call retry method, when the request fails', (done) => {
     const mockError = new Error('Error');
     mockRequest.mockRejectedValue(mockError);
-    const resolve = () => {};
-    const reject = () => {};
 
     dojotClientHttp.retry = (
       // eslint-disable-next-line no-shadow
@@ -95,20 +96,14 @@ describe('DojotClientHttp', () => {
       expect(requestError).toBeDefined();
       expect(options).toBeDefined();
       expect(configRetryRequest).toEqual({
-        attempts: 0,
+        attempts: 1,
         retryDelay: 5000,
         maxNumberAttempts: 3,
       });
       done();
     };
 
-    dojotClientHttp.doRequest(
-      {}, resolve, reject, {
-        attempts: 0,
-        retryDelay: 5000,
-        maxNumberAttempts: 3,
-      },
-    );
+    dojotClientHttp.request({});
     expect.assertions(3);
   });
 
@@ -126,7 +121,7 @@ describe('DojotClientHttp', () => {
     ) => {
       expect(options).toBeDefined();
       expect(configRetryRequest).toEqual({
-        attempts: 1,
+        attempts: 2,
         retryDelay: 10,
         maxNumberAttempts: 3,
       });
@@ -135,7 +130,7 @@ describe('DojotClientHttp', () => {
 
     dojotClientHttp.retry(
       requestError, {}, resolve, reject, {
-        attempts: 0,
+        attempts: 1,
         retryDelay: 10,
         maxNumberAttempts: 3,
       },
