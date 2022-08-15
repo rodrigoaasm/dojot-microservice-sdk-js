@@ -270,7 +270,7 @@ declare module '@dojot/microservice-sdk' {
             defaultMaxNumberAttempts?: number,      
         }
 
-        class DojotClientHttp {
+        class DojotHttpClient{
             constructor(params: DojotClientHttpParams);
             public request( 
                 options: AxiosRequestConfig, 
