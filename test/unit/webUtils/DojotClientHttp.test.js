@@ -6,7 +6,7 @@ const mockAxios = {
 };
 jest.mock('axios', () => mockAxios);
 
-const DojotClientHttp = require('../../../lib/webUtils/DojotClientHttp');
+const DojotClientHttp = require('../../../lib/webUtils/DojotHttpClient');
 
 const loggerMock = {
   error: jest.fn(),

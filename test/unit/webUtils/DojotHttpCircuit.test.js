@@ -1,4 +1,4 @@
-const DojotHttpCircuit = require('../../../lib/webUtils/DojotHttpCircuit');
+const { DojotHttpCircuit } = require('../../../lib/webUtils/DojotHttpCircuit');
 
 // const mockRequest = jest.fn();
 // const mockAxios = {
