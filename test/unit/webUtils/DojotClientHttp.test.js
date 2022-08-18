@@ -4,7 +4,6 @@ const mockAxios = {
     create: () => mockRequest,
   },
 };
-
 jest.mock('axios', () => mockAxios);
 
 const DojotClientHttp = require('../../../lib/webUtils/DojotClientHttp');
@@ -33,7 +32,7 @@ describe('DojotClientHttp', () => {
     expect(dojotClientHttp.defaultMaxNumberAttempts).toEqual(3);
   });
 
-  it('Should use default options to call the doRequest when no options is entered  ', async () => {
+  it('Should use default options to call the doRequest when no options is entered', async () => {
     dojotClientHttp.doRequest = (
       options, resolve, reject, configRetryRequest,
     ) => {
