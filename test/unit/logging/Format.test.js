@@ -22,7 +22,7 @@ describe('Text logging format', () => {
     // resulting message
     // timestamp -- sid -- level: message
     expect(textFormat.transform(info)[MESSAGE])
-      .toMatch(/.* -- microservice-sdk -- .*error.*:.*Message #1.*/);
+      .toMatch(/.* | sid=microservice-sdk | .*level=error*|.*message=Message #1*/);
   });
 
   test('Message with rid metadata', () => {
@@ -38,7 +38,7 @@ describe('Text logging format', () => {
     // resulting message
     // timestamp -- sid -- level: [rid] message
     expect(textFormat.transform(info)[MESSAGE])
-      .toMatch(/.* -- microservice-sdk -- .*error.*: \[1\] .*Message #1.*/);
+      .toMatch(/.* | sid=microservice-sdk | .*level=error*|.*message=Message #1*/);
   });
 
   test('Message with rid, file and line metadata', () => {
@@ -56,7 +56,7 @@ describe('Text logging format', () => {
     // resulting message
     // timestamp -- sid -- level: [rid] message
     expect(textFormat.transform(info)[MESSAGE])
-      .toMatch(/.* -- microservice-sdk -- .*error.*: \(xyz.js:123\) \[1\].*Message #1.*/);
+      .toMatch(/.* | sid=microservice-sdk | .*level=error*: \(xyz.js:123\) \[1\].*message=Message #1*/);
   });
 
   test('Message with rid and extra metadata', () => {
@@ -72,7 +72,7 @@ describe('Text logging format', () => {
     // resulting message
     // timestamp -- sid -- level: [rid] message {extra}
     expect(textFormat.transform(info)[MESSAGE])
-      .toMatch(/.* -- microservice-sdk -- .*error.*: \[1\] .*Message #1.*\{.*source_ip.*\}/);
+      .toMatch(/.* | sid=microservice-sdk | .*level=error*: \[1\] .*message=Message #1*\{.*source_ip.*\}/);
   });
 });
 
