@@ -172,59 +172,69 @@ declare module '@dojot/microservice-sdk' {
             function defaultErrorHandler(args: DefaultErrorHandlerArgs): Function;
 
             module interceptors {
+
+                interface DojotHttpInterceptor {
+                    path: string,
+                    name: string,
+                    middleware: Function;
+                }
+
                 interface BeaconInterceptorParams {
                     stateManager: ServiceStateManager,
                     logger: Logger,
                     path: string,
-                }                
-                function beaconInterceptor(params: BeaconInterceptorParams): any;        
+                }
+
+                function beaconInterceptor(params: BeaconInterceptorParams): DojotHttpInterceptor;
+
+                function createCircuitBreakerInterceptor(circuits: DojotHttpCircuit[], path: string ): DojotHttpInterceptor;
                 
-                function createKeycloakAuthInterceptor(tenants: Array<TenantInfo>, logger: Logger, path: string): any;
+                function createKeycloakAuthInterceptor(tenants: Array<TenantInfo>, logger: Logger, path: string): DojotHttpInterceptor;
                 
                 interface JsonBodyParsingInterceptorParams {
                     config: any,
                 }
-                function jsonBodyParsingInterceptor(params: JsonBodyParsingInterceptorParams): any;
+                function jsonBodyParsingInterceptor(params: JsonBodyParsingInterceptorParams): DojotHttpInterceptor;
 
                 interface PaginateInterceptorParams { 
                     limit: number, 
                     maxLimit: number,
                     path: string,
                 }
-                function paginateInterceptor(params: PaginateInterceptorParams): any;
+                function paginateInterceptor(params: PaginateInterceptorParams): DojotHttpInterceptor;
 
                 interface ReadinessInterceptorParams {
                     stateManager: ServiceStateManager, logger: Logger, path: string
                 }
-                function readinessInterceptor(params: ReadinessInterceptorParams): any;
+                function readinessInterceptor(params: ReadinessInterceptorParams): DojotHttpInterceptor;
 
                 interface RequestIdInterceptorParams { path: string }
-                function requestIdInterceptor(params: ReadinessInterceptorParams): any;
+                function requestIdInterceptor(params: ReadinessInterceptorParams): DojotHttpInterceptor;
 
                 interface RequestLogInterceptorParams { 
                     logFormat: string,
                     logger: Logger,
                     path: string,
                 }
-                function requestLogInterceptor(params: ReadinessInterceptorParams): any
+                function requestLogInterceptor(params: ReadinessInterceptorParams): DojotHttpInterceptor
 
                 interface ResponseCompressInterceptorParams { 
                     config: any,
                     path: string,
                 }
-                function responseCompressInterceptor(params: ResponseCompressInterceptorParams): any;
+                function responseCompressInterceptor(params: ResponseCompressInterceptorParams): DojotHttpInterceptor;
 
                 interface StaticFileInterceptorParams { 
                     baseDirectory: string,
                     staticFilePath: string,
                     path: string,
                 }
-                function staticFileInterceptor(params: StaticFileInterceptorParams): any;
+                function staticFileInterceptor(params: StaticFileInterceptorParams): DojotHttpInterceptor;
 
                 interface TokenParsingInterceptorParams {
                     ignoredPaths: string, path: string,
                 }
-                function tokenParsingInterceptor(params: TokenParsingInterceptorParams): any;
+                function tokenParsingInterceptor(params: TokenParsingInterceptorParams): DojotHttpInterceptor;
             }
         }
 
@@ -263,15 +273,15 @@ declare module '@dojot/microservice-sdk' {
             maxNumberAttempts: number,
         }
 
-        interface DojotClientHttpParams {
+        interface DojotHttpClientParams {
             defaultClientOptions: AxiosRequestConfig,
             logger: Logger,
             defaultRetryDelay?: number,
             defaultMaxNumberAttempts?: number,      
         }
 
-        class DojotClientHttp {
-            constructor(params: DojotClientHttpParams);
+        class DojotHttpClient{
+            constructor(params: DojotHttpClientParams);
             public request( 
                 options: AxiosRequestConfig, 
                 retryDelay?: number, 
@@ -290,6 +300,23 @@ declare module '@dojot/microservice-sdk' {
                 reject: Function,
                 configRetryRequest: ConfigRetryRequest
             ): void;
+        }
+
+        interface DojotHttpCircuitParams {
+            serviceName: string,
+            logger: Logger,
+            defaultRetryDelay?: number,
+            attemptsThreshold?: number,
+            resetTimeout?: number,
+            initialState?: string,
+            defaultClientOptions: AxiosRequestConfig,
+        }
+
+        class DojotHttpCircuit{
+            constructor(params: DojotHttpCircuitParams);
+            public request(
+                options: AxiosRequestConfig, 
+            ): Promise<AxiosResponse>;
         }
 
         class SecretFileHandler {

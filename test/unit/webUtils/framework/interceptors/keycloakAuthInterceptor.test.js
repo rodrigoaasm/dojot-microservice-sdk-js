@@ -4,7 +4,7 @@ const mockDojotHttpClient = {
   request: jest.fn(),
 };
 
-jest.mock('../../../../../lib/webUtils/DojotClientHttp',
+jest.mock('../../../../../lib/webUtils/DojotHttpClient',
   () => jest.fn().mockImplementation(() => mockDojotHttpClient));
 
 const {
