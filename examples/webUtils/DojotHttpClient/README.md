@@ -1,4 +1,4 @@
-## DojotClientHTTP
+## DojotHTTPClient
 
 This example uses an api to simulate the requests in the example.
 
