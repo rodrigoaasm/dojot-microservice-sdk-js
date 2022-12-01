@@ -34,8 +34,8 @@ declare module '@dojot/microservice-sdk' {
         class Producer{
             constructor(config: any);            
             public connect(): Promise<void>;
-            public produce(topic: string, message: string, key:string, partition:number): Promise<void>;
-            public disconnect(): Promise<Function>;            
+            public produce(topic: string, message: string, key?:string, partition?:number): Promise<void>;
+            public disconnect(): Promise<Function>;
             public getStatus(): Promise<{ connected: boolean, metadata: Object }>;
             private isDeliveryReportEnabled(): number;
             private static resolveOnDeliveryReport(err: Error, report: Object): void;
@@ -59,11 +59,11 @@ declare module '@dojot/microservice-sdk' {
     module ConfigManager {
         function loadSettings(
             service: string,
-            userConfigFile: string,
-            configPath: string,
-            rootPath: string
+            userConfigFile?: string,
+            configPath?: string,
+            rootPath?: string
         ): void;
-        function getConfig(service: string, configPath: string, rootPath: string): any;
+        function getConfig(service: string, configPath?: string, rootPath?: string): any;
         function transformObjectKeys (obj: Object, mapFunction: Function): Array<any>;
     }
 
@@ -187,10 +187,20 @@ declare module '@dojot/microservice-sdk' {
 
                 function beaconInterceptor(params: BeaconInterceptorParams): DojotHttpInterceptor;
 
+                interface KeycloakAuthOptions {
+                    allowMasterTenant?: boolean,
+                    verifyOnline?: boolean,
+                    configKeycloak?: {
+                        url: string,
+                    }
+                }
+
                 function createCircuitBreakerInterceptor(circuits: DojotHttpCircuit[], path: string ): DojotHttpInterceptor;
-                
-                function createKeycloakAuthInterceptor(tenants: Array<TenantInfo>, logger: Logger, path: string): DojotHttpInterceptor;
-                
+
+                function createKeycloakAuthInterceptor(tenants: Array<TenantInfo>, logger: Logger, path?: string, options?: KeycloakAuthOptions): DojotHttpInterceptor;
+
+                function createKeycloakAuthInterceptorWithFilter(filter: Function, logger: Logger, path?: string , options?: KeycloakAuthOptions): DojotHttpInterceptor;
+
                 interface JsonBodyParsingInterceptorParams {
                     config: any,
                 }
