@@ -178,6 +178,7 @@ describe('DojotClientHttp', () => {
     const resolve = () => {};
     const reject = (error) => {
       expect(error.message).toEqual('Number of attempts exceeded.');
+      expect(error.responseError.status).toEqual(400);
       done();
     };
 
@@ -188,7 +189,7 @@ describe('DojotClientHttp', () => {
         maxNumberAttempts: 3,
       },
     );
-    expect.assertions(1);
+    expect.assertions(2);
   });
 
   it('Should init a custom client', () => {
